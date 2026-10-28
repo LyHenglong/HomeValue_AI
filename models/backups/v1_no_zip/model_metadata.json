@@ -1,0 +1,28 @@
+{
+  "created_utc": "2026-10-27T15:57:06+00:00",
+  "model_name": "hist_gb_log",
+  "seed": 42,
+  "versions": {
+    "python": "3.10.10",
+    "pandas": "2.2.3",
+    "numpy": "1.26.4",
+    "scikit-learn": "1.7.2",
+    "joblib": "1.4.2"
+  },
+  "model_file_mb": 2.92,
+  "training_rows": 418165,
+  "interval_levels": [
+    "0.8",
+    "0.9"
+  ],
+  "support_policy": {
+    "supported_min_train_rows": 100,
+    "limited_min_train_rows": 30,
+    "min_heldout_rows": 10,
+    "max_heldout_mdape": 0.25
+  },
+  "input_hashes": {
+    "sold_clean.parquet": "a8e1e48575aa2e5dbe38c288593d9ae980a1f065bf7a944ec2757500cb91ed35",
+    "sold_incomplete_features.parquet": "eaa83c3a4a754e7b04feaffd31b06a1f94ee218d27f9251ac20d4b3dd8571cd2"
+  }
+}

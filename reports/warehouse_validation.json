@@ -1,0 +1,282 @@
+{
+  "generated_utc": "2026-10-27T15:31:55+00:00",
+  "all_passed": true,
+  "latest_etl_run": {
+    "run_id": "2",
+    "started_at": "2026-10-27 15:31:08.644082+00:00",
+    "finished_at": "2026-10-27 15:31:48.847290+00:00",
+    "status": "succeeded",
+    "raw_file": "data\\raw\\realtor-data.zip.csv.zip",
+    "raw_sha256": "4a31b6fec6b2a3ea32be7bf9571c8499ce05af90d3be0cf1b939c60388d127d1",
+    "clean_parquet_sha256": "a8e1e48575aa2e5dbe38c288593d9ae980a1f065bf7a944ec2757500cb91ed35",
+    "quarantine_parquet_sha256": "a888b40059b5748730beb0dfc9a45643aa3515fb9978bcbef8f48badc14675cf",
+    "staged_clean_rows": "696287",
+    "staged_quarantine_rows": "704",
+    "fact_rows_inserted": "0",
+    "fact_rows_updated": "0",
+    "fact_rows_deleted": "0",
+    "error_message": null
+  },
+  "checks": [
+    {
+      "check": "fact rows == parquet rows",
+      "passed": true,
+      "detail": "fact=696,287 parquet=696,287"
+    },
+    {
+      "check": "staging rows == parquet rows",
+      "passed": true,
+      "detail": "staging=696,287"
+    },
+    {
+      "check": "quarantine rows == parquet rows",
+      "passed": true,
+      "detail": "audit=704 parquet=704"
+    },
+    {
+      "check": "fact rows == cleaning_summary clean_rows",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "dim_location rows == distinct (state, city, zip) in parquet",
+      "passed": true,
+      "detail": "dim=22,128"
+    },
+    {
+      "check": "fact required columns are declared NOT NULL",
+      "passed": true,
+      "detail": "missing: []"
+    },
+    {
+      "check": "fact.raw_row_id has no NULLs",
+      "passed": true,
+      "detail": "nulls=0"
+    },
+    {
+      "check": "fact.location_key has no NULLs",
+      "passed": true,
+      "detail": "nulls=0"
+    },
+    {
+      "check": "fact.property_dim_key has no NULLs",
+      "passed": true,
+      "detail": "nulls=0"
+    },
+    {
+      "check": "fact.price has no NULLs",
+      "passed": true,
+      "detail": "nulls=0"
+    },
+    {
+      "check": "fact.house_size_sqft has no NULLs",
+      "passed": true,
+      "detail": "nulls=0"
+    },
+    {
+      "check": "fact.price_per_sqft has no NULLs",
+      "passed": true,
+      "detail": "nulls=0"
+    },
+    {
+      "check": "fact.acre_lot_was_zero has no NULLs",
+      "passed": true,
+      "detail": "nulls=0"
+    },
+    {
+      "check": "fact.repeated_property has no NULLs",
+      "passed": true,
+      "detail": "nulls=0"
+    },
+    {
+      "check": "fact.property_group has no NULLs",
+      "passed": true,
+      "detail": "nulls=0"
+    },
+    {
+      "check": "fact.source_status has no NULLs",
+      "passed": true,
+      "detail": "nulls=0"
+    },
+    {
+      "check": "fact.etl_run_id has no NULLs",
+      "passed": true,
+      "detail": "nulls=0"
+    },
+    {
+      "check": "only prev_sold_date_key may be NULL, matching parquet",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "dw.fact_property_listing (raw_row_id) unique",
+      "passed": true,
+      "detail": "duplicate keys=0"
+    },
+    {
+      "check": "dw.dim_location (location_key) unique",
+      "passed": true,
+      "detail": "duplicate keys=0"
+    },
+    {
+      "check": "dw.dim_location (state, city, zip_code) unique",
+      "passed": true,
+      "detail": "duplicate keys=0"
+    },
+    {
+      "check": "dw.dim_property (property_dim_key) unique",
+      "passed": true,
+      "detail": "duplicate keys=0"
+    },
+    {
+      "check": "dw.dim_property (bedrooms, bathrooms, house_size_band, lot_size_band) unique",
+      "passed": true,
+      "detail": "duplicate keys=0"
+    },
+    {
+      "check": "dw.dim_date (date_key) unique",
+      "passed": true,
+      "detail": "duplicate keys=0"
+    },
+    {
+      "check": "audit.quarantine_record (raw_row_id) unique",
+      "passed": true,
+      "detail": "duplicate keys=0"
+    },
+    {
+      "check": "every dw/audit table has a primary key constraint",
+      "passed": true,
+      "detail": "['audit.etl_run', 'audit.quarantine_record', 'dw.dim_date', 'dw.dim_location', 'dw.dim_property', 'dw.fact_property_listing']"
+    },
+    {
+      "check": "referential integrity: fact -> dim_location",
+      "passed": true,
+      "detail": "orphans=0"
+    },
+    {
+      "check": "referential integrity: fact -> dim_property",
+      "passed": true,
+      "detail": "orphans=0"
+    },
+    {
+      "check": "referential integrity: fact -> dim_date",
+      "passed": true,
+      "detail": "orphans=0"
+    },
+    {
+      "check": "referential integrity: fact -> audit.etl_run",
+      "passed": true,
+      "detail": "orphans=0"
+    },
+    {
+      "check": "referential integrity: dim_location rows with no facts",
+      "passed": true,
+      "detail": "orphans=0"
+    },
+    {
+      "check": "referential integrity: dim_property rows with no facts",
+      "passed": true,
+      "detail": "orphans=0"
+    },
+    {
+      "check": "fact table has 4 declared foreign keys",
+      "passed": true,
+      "detail": "declared=4"
+    },
+    {
+      "check": "row-level: staging vs fact/dimensions (all columns) has 0 mismatches",
+      "passed": true,
+      "detail": "mismatching rows=0"
+    },
+    {
+      "check": "price_per_sqft within half a cent of price / house_size_sqft",
+      "passed": true,
+      "detail": "violations=0"
+    },
+    {
+      "check": "measure count matches parquet",
+      "passed": true,
+      "detail": "warehouse=696287.0 parquet=696287"
+    },
+    {
+      "check": "measure sum(price) matches parquet",
+      "passed": true,
+      "detail": "warehouse=353650593494.0 parquet=353650593494"
+    },
+    {
+      "check": "measure min(price) matches parquet",
+      "passed": true,
+      "detail": "warehouse=4900.0 parquet=4900"
+    },
+    {
+      "check": "measure max(price) matches parquet",
+      "passed": true,
+      "detail": "warehouse=80000000.0 parquet=80000000"
+    },
+    {
+      "check": "measure sum(house_size) matches parquet",
+      "passed": true,
+      "detail": "warehouse=1318531554.0 parquet=1318531554"
+    },
+    {
+      "check": "measure count(acre_lot) matches parquet",
+      "passed": true,
+      "detail": "warehouse=608298.0 parquet=608298"
+    },
+    {
+      "check": "sum(acre_lot) matches parquet (4-dp tolerance 0.01)",
+      "passed": true,
+      "detail": "warehouse=669469.24 parquet=669469.24"
+    },
+    {
+      "check": "per-state row counts and price totals match parquet",
+      "passed": true,
+      "detail": "states=51"
+    },
+    {
+      "check": "constraint probe: price <= 0 rejected",
+      "passed": true,
+      "detail": "CheckViolation"
+    },
+    {
+      "check": "constraint probe: unknown location_key rejected",
+      "passed": true,
+      "detail": "ForeignKeyViolation"
+    },
+    {
+      "check": "constraint probe: duplicate raw_row_id rejected",
+      "passed": true,
+      "detail": "UniqueViolation"
+    },
+    {
+      "check": "constraint probe: non-sold status rejected",
+      "passed": true,
+      "detail": "CheckViolation"
+    },
+    {
+      "check": "constraint probe: bad zip format rejected",
+      "passed": true,
+      "detail": "CheckViolation"
+    },
+    {
+      "check": "probes left data unchanged",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "latest etl_run succeeded",
+      "passed": true,
+      "detail": "run_id=2"
+    },
+    {
+      "check": "etl_run source hash equals cleaning_summary raw_sha256",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "etl_run parquet hash equals current sold_clean.parquet",
+      "passed": true,
+      "detail": ""
+    }
+  ]
+}

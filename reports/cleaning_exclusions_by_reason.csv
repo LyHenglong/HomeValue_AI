@@ -1,0 +1,19 @@
+rule,stage,disposition,description,rows_hit_independently,rows_removed_first_failing
+missing_location,all,exclude,"state, city or zip_code is missing, or zip_code is not a valid 1-5 digit number",1606,1606
+invalid_state,all,quarantine,"state is not a U.S. state, DC, Puerto Rico, Guam or the U.S. Virgin Islands",1,1
+zip_state_mismatch,all,quarantine,state disagrees with the state 90%+ of rows in the same zip report (zips with >= 5 rows),99,99
+status_not_sold,all,scope,status is not 'sold' (kept in raw data; outside the primary modelling dataset),1412784,1412784
+missing_price,sold,exclude,price is missing (target is never imputed),245,245
+nonpositive_price,sold,quarantine,price <= 0,0,0
+price_int32_sentinel,sold,quarantine,"price >= 2,147,483,647 (integer overflow / placeholder)",0,0
+price_below_min,sold,quarantine,"0 < price < $1,000",113,113
+price_above_review_cap,sold,quarantine,"price > $100,000,000 (manual review)",1,1
+missing_bed,sold,exclude,bed is missing (required baseline feature),69910,69802
+missing_bath,sold,exclude,bath is missing (required baseline feature),77865,10449
+missing_house_size,sold,exclude,house_size is missing (required baseline feature),103642,34447
+implausible_bed,sold,quarantine,bed > 20,143,92
+implausible_bath,sold,quarantine,bath > 20,79,13
+implausible_house_size,sold,quarantine,"house_size < 200 or > 50,000 sqft",58,26
+implausible_price_per_sqft,sold,quarantine,"price / house_size outside $5-$10,000 per sqft",146,51
+implausible_acre_lot,sold,quarantine,"acre_lot > 1,000 acres",397,308
+exact_duplicate_sale,sold,exclude,"same property key, price, sale date, bed, bath, house_size and acre_lot as an earlier kept row",58,58

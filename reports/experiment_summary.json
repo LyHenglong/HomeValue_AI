@@ -1,0 +1,735 @@
+{
+  "generated_utc": "2026-10-27T15:57:06+00:00",
+  "config": {
+    "seed": 42,
+    "target": "price (recorded price of sold-status records; not a verified completed-sale price)",
+    "split_fractions": {
+      "train": 0.6,
+      "validation": 0.1,
+      "calibration": 0.1,
+      "test": 0.2
+    },
+    "heldout_city_fraction": 0.15,
+    "conformal_alphas": [
+      0.2,
+      0.1
+    ],
+    "support_policy": {
+      "supported_min_train_rows": 100,
+      "limited_min_train_rows": 30,
+      "min_heldout_rows": 10,
+      "max_heldout_mdape": 0.25
+    },
+    "features": {
+      "location": [
+        "state",
+        "city_key"
+      ],
+      "numeric": [
+        "bed",
+        "bath",
+        "log_house_size",
+        "log_acre_lot"
+      ],
+      "missing_indicators": [
+        "bed_missing",
+        "bath_missing",
+        "size_missing",
+        "lot_missing"
+      ]
+    },
+    "excluded_features": [
+      "price_per_sqft (derived from the target)",
+      "prev_sold_date / sold_year (meaning unverified)",
+      "street, brokered_by, raw_row_id, property_key (identifiers)",
+      "zip_code (not a user-facing input; high cardinality)"
+    ]
+  },
+  "test_split_evaluated": true,
+  "data_source": {
+    "source": "postgresql warehouse (dw.fact_property_listing)",
+    "warehouse_matches_parquet": true,
+    "warehouse_rows": 696287
+  },
+  "property_group_reliability": {
+    "rows": 696287,
+    "groups": 696009,
+    "rows_without_property_key": 1752,
+    "singleton_groups": 695813,
+    "groups_with_multiple_rows": 196,
+    "rows_in_multi_row_groups": 474,
+    "largest_group": 11,
+    "multi_row_groups_whose_rows_differ_in_bed_bath_or_size": 134,
+    "multi_row_groups_spanning_cities": 8,
+    "street_codes_shared_by_multiple_zips": 2806,
+    "interpretation": "Rows with no key become singleton groups (cannot be linked to other rows). Where the key repeats, rows often differ in bed/bath/size, so the key can merge different units (conservative for splitting) but cannot detect the same property listed under a missing or different key."
+  },
+  "input_hashes": {
+    "sold_clean.parquet": "a8e1e48575aa2e5dbe38c288593d9ae980a1f065bf7a944ec2757500cb91ed35",
+    "sold_incomplete_features.parquet": "eaa83c3a4a754e7b04feaffd31b06a1f94ee218d27f9251ac20d4b3dd8571cd2"
+  },
+  "splits": [
+    {
+      "split": "train",
+      "rows": 418165,
+      "groups": 418011,
+      "singleton_key_rows": 1082,
+      "cities": 14242,
+      "share_of_rows": 0.6005641351913794
+    },
+    {
+      "split": "validation",
+      "rows": 69769,
+      "groups": 69730,
+      "singleton_key_rows": 181,
+      "cities": 8165,
+      "share_of_rows": 0.10020149737105533
+    },
+    {
+      "split": "calibration",
+      "rows": 69253,
+      "groups": 69217,
+      "singleton_key_rows": 186,
+      "cities": 8179,
+      "share_of_rows": 0.0994604236471455
+    },
+    {
+      "split": "test",
+      "rows": 139100,
+      "groups": 139051,
+      "singleton_key_rows": 303,
+      "cities": 10486,
+      "share_of_rows": 0.19977394379041977
+    }
+  ],
+  "selected_model": "hist_gb_log",
+  "selected_model_params": {
+    "categorical_features": "from_dtype",
+    "early_stopping": true,
+    "interaction_cst": null,
+    "l2_regularization": 1.0,
+    "learning_rate": 0.1,
+    "loss": "squared_error",
+    "max_bins": 255,
+    "max_depth": null,
+    "max_features": 1.0,
+    "max_iter": 1000,
+    "max_leaf_nodes": 63,
+    "min_samples_leaf": 50,
+    "monotonic_cst": null,
+    "n_iter_no_change": 15,
+    "quantile": null,
+    "random_state": 42,
+    "scoring": "loss",
+    "tol": 1e-07,
+    "validation_fraction": 0.1,
+    "verbose": 0,
+    "warm_start": false
+  },
+  "selected_model_boosting_iterations": 765,
+  "support_status_counts": [
+    {
+      "status": "limited",
+      "cities": 1643,
+      "rows": 179078
+    },
+    {
+      "status": "supported",
+      "cities": 792,
+      "rows": 401851
+    },
+    {
+      "status": "unsupported",
+      "cities": 13655,
+      "rows": 115358
+    }
+  ],
+  "support_threshold_analysis": [
+    {
+      "group": "n_train >= 30",
+      "heldout_rows": 115731,
+      "cities": 2435,
+      "MdAPE": 0.14159752814288584,
+      "MAE": 108451.25258246742,
+      "share_of_rows_over_0.5_APE": 0.07573597393956676
+    },
+    {
+      "group": "n_train < 30",
+      "heldout_rows": 23291,
+      "cities": 7977,
+      "MdAPE": 0.19332763057594496,
+      "MAE": 110063.21839892352,
+      "share_of_rows_over_0.5_APE": 0.14078399381735435
+    },
+    {
+      "group": "n_train >= 100",
+      "heldout_rows": 86750,
+      "cities": 835,
+      "MdAPE": 0.14129943501469294,
+      "MAE": 109313.66018517961,
+      "share_of_rows_over_0.5_APE": 0.07651873198847262
+    },
+    {
+      "group": "n_train < 100",
+      "heldout_rows": 52272,
+      "cities": 9577,
+      "MdAPE": 0.16251648548864517,
+      "MAE": 107738.259704747,
+      "share_of_rows_over_0.5_APE": 0.10342056932966023
+    },
+    {
+      "group": "n_train >= 500",
+      "heldout_rows": 37124,
+      "cities": 84,
+      "MdAPE": 0.1642370924389714,
+      "MAE": 128064.43025770083,
+      "share_of_rows_over_0.5_APE": 0.09936967999138024
+    },
+    {
+      "group": "n_train < 500",
+      "heldout_rows": 101898,
+      "cities": 10328,
+      "MdAPE": 0.14313546729389015,
+      "MAE": 101674.12926126106,
+      "share_of_rows_over_0.5_APE": 0.0819937584643467
+    }
+  ],
+  "model_comparison": [
+    {
+      "model": "dummy_median",
+      "val_MAE": 280876.69662744197,
+      "val_RMSE": 681976.3968447545,
+      "val_R2": -0.04436695644764632,
+      "val_MedAE": 159900.0,
+      "val_MdAPE": 0.43837513463609784,
+      "val_R2_log": -1.757527639423273e-06,
+      "val_fit_seconds": 0.01089620590209961,
+      "val_model_size_mb": 0.000863,
+      "test_MAE": 282014.39825305535,
+      "test_RMSE": 712215.3922343081,
+      "test_R2": -0.04085854858746085,
+      "test_MedAE": 160000.0,
+      "test_MdAPE": 0.43845289927537345,
+      "test_predict_seconds": 0.020000934600830078
+    },
+    {
+      "model": "ridge_log",
+      "val_MAE": 125265.74628766214,
+      "val_RMSE": 404730.2984284449,
+      "val_R2": 0.6321710826920757,
+      "val_MedAE": 60756.10301272536,
+      "val_MdAPE": 0.17625147908424563,
+      "val_R2_log": 0.7918318562004674,
+      "val_fit_seconds": 1.5637543201446533,
+      "val_model_size_mb": 0.639801,
+      "test_MAE": 124698.74732146427,
+      "test_RMSE": 424926.920847711,
+      "test_R2": 0.6294920804703699,
+      "test_MedAE": 60721.87119640585,
+      "test_MdAPE": 0.17525530451408083,
+      "test_predict_seconds": 0.14954805374145508
+    },
+    {
+      "model": "random_forest_log",
+      "val_MAE": 111236.63853704669,
+      "val_RMSE": 377327.12245946244,
+      "val_R2": 0.6802942247155326,
+      "val_MedAE": 51730.74736696057,
+      "val_MdAPE": 0.15219796159752103,
+      "val_R2_log": 0.8272924150942609,
+      "val_fit_seconds": 15.400439023971558,
+      "val_model_size_mb": 60.530971,
+      "test_MAE": 111134.21192097117,
+      "test_RMSE": 424166.62030637113,
+      "test_R2": 0.6308167569945137,
+      "test_MedAE": 52178.60263624339,
+      "test_MdAPE": 0.15130180679698008,
+      "test_predict_seconds": 0.7542171478271484
+    },
+    {
+      "model": "hist_gb_log",
+      "val_MAE": 106870.64485246736,
+      "val_RMSE": 346754.0569888458,
+      "val_R2": 0.7300038718144151,
+      "val_MedAE": 50898.75120732788,
+      "val_MdAPE": 0.1481552487213473,
+      "val_R2_log": 0.8405193196833196,
+      "val_fit_seconds": 13.235122442245483,
+      "val_model_size_mb": 6.172554,
+      "test_MAE": 106982.27139900427,
+      "test_RMSE": 383268.89895548037,
+      "test_R2": 0.6985771575544044,
+      "test_MedAE": 51125.441623987936,
+      "test_MdAPE": 0.14905708493367448,
+      "test_predict_seconds": 1.9652869701385498
+    },
+    {
+      "model": "hist_gb_raw",
+      "val_MAE": 113767.3708382153,
+      "val_RMSE": 352939.77165613975,
+      "val_R2": 0.7202850781724484,
+      "val_MedAE": 55342.97117739951,
+      "val_MdAPE": 0.15720895977473318,
+      "val_R2_log": 0.7990586000833704,
+      "val_fit_seconds": 4.587078094482422,
+      "val_model_size_mb": 2.173634,
+      "test_MAE": 113116.68000839662,
+      "test_RMSE": 381183.69734755874,
+      "test_R2": 0.7018480601688315,
+      "test_MedAE": 55726.606704681224,
+      "test_MdAPE": 0.15733963995564795,
+      "test_predict_seconds": 1.043734073638916
+    }
+  ],
+  "missing_data_experiment": [
+    {
+      "model": "hist_gb_log",
+      "strategy": "A complete-case training",
+      "evaluated_on": "validation: complete-case rows",
+      "n": 69769,
+      "MAE": 106870.64485246736,
+      "RMSE": 346754.0569888458,
+      "R2": 0.7300038718144151,
+      "MdAPE": 0.1481552487213473
+    },
+    {
+      "model": "hist_gb_log",
+      "strategy": "A complete-case training",
+      "evaluated_on": "validation: incomplete rows, house_size missing",
+      "n": 10347,
+      "MAE": 245527.92126267907,
+      "RMSE": 479514.2106818631,
+      "R2": 0.18966130811470627,
+      "MdAPE": 0.8732772952068466
+    },
+    {
+      "model": "hist_gb_log",
+      "strategy": "A complete-case training",
+      "evaluated_on": "validation: incomplete rows, only bed/bath missing",
+      "n": 1171,
+      "MAE": 220524.66850096543,
+      "RMSE": 577302.1838452314,
+      "R2": 0.5827220156470214,
+      "MdAPE": 0.28636543654166247
+    },
+    {
+      "model": "hist_gb_log",
+      "strategy": "B + imputed incomplete rows",
+      "evaluated_on": "validation: complete-case rows",
+      "n": 69769,
+      "MAE": 108873.94812915545,
+      "RMSE": 352257.73423142236,
+      "R2": 0.7213651021762051,
+      "MdAPE": 0.1518533755643596
+    },
+    {
+      "model": "hist_gb_log",
+      "strategy": "B + imputed incomplete rows",
+      "evaluated_on": "validation: incomplete rows, house_size missing",
+      "n": 10347,
+      "MAE": 119081.14417907818,
+      "RMSE": 395971.0425718729,
+      "R2": 0.4474259755955512,
+      "MdAPE": 0.3252309567796984
+    },
+    {
+      "model": "hist_gb_log",
+      "strategy": "B + imputed incomplete rows",
+      "evaluated_on": "validation: incomplete rows, only bed/bath missing",
+      "n": 1171,
+      "MAE": 177519.53003258642,
+      "RMSE": 416541.22291820013,
+      "R2": 0.7827623747584647,
+      "MdAPE": 0.2380205723716123
+    },
+    {
+      "model": "hist_gb_log",
+      "strategy": "A complete-case training",
+      "evaluated_on": "test: complete-case rows",
+      "n": 139100,
+      "MAE": 106982.27139900427,
+      "RMSE": 383268.89895548037,
+      "R2": 0.6985771575544044,
+      "MdAPE": 0.14905708493367448
+    },
+    {
+      "model": "hist_gb_log",
+      "strategy": "A complete-case training",
+      "evaluated_on": "test: incomplete rows, house_size missing",
+      "n": 20533,
+      "MAE": 257528.48525129785,
+      "RMSE": 714080.9219988073,
+      "R2": 0.125514203548313,
+      "MdAPE": 0.9040759861359611
+    },
+    {
+      "model": "hist_gb_log",
+      "strategy": "A complete-case training",
+      "evaluated_on": "test: incomplete rows, only bed/bath missing",
+      "n": 2156,
+      "MAE": 219596.71062485073,
+      "RMSE": 507302.6007069064,
+      "R2": 0.6536474553728335,
+      "MdAPE": 0.2867900362608705
+    },
+    {
+      "model": "hist_gb_log",
+      "strategy": "B + imputed incomplete rows",
+      "evaluated_on": "test: complete-case rows",
+      "n": 139100,
+      "MAE": 108581.25556937649,
+      "RMSE": 379934.1584788236,
+      "R2": 0.7037995697302745,
+      "MdAPE": 0.15258273216662918
+    },
+    {
+      "model": "hist_gb_log",
+      "strategy": "B + imputed incomplete rows",
+      "evaluated_on": "test: incomplete rows, house_size missing",
+      "n": 20533,
+      "MAE": 129236.27040557865,
+      "RMSE": 612850.4994360503,
+      "R2": 0.3558796975066735,
+      "MdAPE": 0.3310490553682551
+    },
+    {
+      "model": "hist_gb_log",
+      "strategy": "B + imputed incomplete rows",
+      "evaluated_on": "test: incomplete rows, only bed/bath missing",
+      "n": 2156,
+      "MAE": 182978.8229844565,
+      "RMSE": 417652.3472240153,
+      "R2": 0.7652454285267214,
+      "MdAPE": 0.2486334396374752
+    },
+    {
+      "model": "ridge_log",
+      "strategy": "A complete-case training",
+      "evaluated_on": "validation: complete-case rows",
+      "n": 69769,
+      "MAE": 125265.74628766214,
+      "RMSE": 404730.2984284449,
+      "R2": 0.6321710826920757,
+      "MdAPE": 0.17625147908424563
+    },
+    {
+      "model": "ridge_log",
+      "strategy": "A complete-case training",
+      "evaluated_on": "validation: incomplete rows, house_size missing",
+      "n": 10347,
+      "MAE": 246126.89122884607,
+      "RMSE": 492134.5510317735,
+      "R2": 0.14644536648228645,
+      "MdAPE": 0.8163645442191232
+    },
+    {
+      "model": "ridge_log",
+      "strategy": "A complete-case training",
+      "evaluated_on": "validation: incomplete rows, only bed/bath missing",
+      "n": 1171,
+      "MAE": 215247.78445834067,
+      "RMSE": 708984.2076980611,
+      "R2": 0.37065006121476274,
+      "MdAPE": 0.2769005204043844
+    },
+    {
+      "model": "ridge_log",
+      "strategy": "B + imputed incomplete rows",
+      "evaluated_on": "validation: complete-case rows",
+      "n": 69769,
+      "MAE": 134480.0925022601,
+      "RMSE": 475005.9131134821,
+      "R2": 0.49334484437975823,
+      "MdAPE": 0.18665507432391396
+    },
+    {
+      "model": "ridge_log",
+      "strategy": "B + imputed incomplete rows",
+      "evaluated_on": "validation: incomplete rows, house_size missing",
+      "n": 10347,
+      "MAE": 154743.47627326255,
+      "RMSE": 470725.421034863,
+      "R2": 0.21909371787694665,
+      "MdAPE": 0.4241614369846372
+    },
+    {
+      "model": "ridge_log",
+      "strategy": "B + imputed incomplete rows",
+      "evaluated_on": "validation: incomplete rows, only bed/bath missing",
+      "n": 1171,
+      "MAE": 339232.1421269561,
+      "RMSE": 732549.0578798002,
+      "R2": 0.32811878417691265,
+      "MdAPE": 0.5159335735420472
+    },
+    {
+      "model": "ridge_log",
+      "strategy": "A complete-case training",
+      "evaluated_on": "test: complete-case rows",
+      "n": 139100,
+      "MAE": 124698.74732146427,
+      "RMSE": 424926.920847711,
+      "R2": 0.6294920804703699,
+      "MdAPE": 0.17525530451408083
+    },
+    {
+      "model": "ridge_log",
+      "strategy": "A complete-case training",
+      "evaluated_on": "test: incomplete rows, house_size missing",
+      "n": 20533,
+      "MAE": 255591.808631587,
+      "RMSE": 710261.7876216004,
+      "R2": 0.13484325172655487,
+      "MdAPE": 0.8364862653990497
+    },
+    {
+      "model": "ridge_log",
+      "strategy": "A complete-case training",
+      "evaluated_on": "test: incomplete rows, only bed/bath missing",
+      "n": 2156,
+      "MAE": 214317.87731825284,
+      "RMSE": 478467.4228680469,
+      "R2": 0.6919019480609379,
+      "MdAPE": 0.288637406660056
+    },
+    {
+      "model": "ridge_log",
+      "strategy": "B + imputed incomplete rows",
+      "evaluated_on": "test: complete-case rows",
+      "n": 139100,
+      "MAE": 133518.79010349468,
+      "RMSE": 456176.63900236104,
+      "R2": 0.5729929110477288,
+      "MdAPE": 0.18463286799409068
+    },
+    {
+      "model": "ridge_log",
+      "strategy": "B + imputed incomplete rows",
+      "evaluated_on": "test: incomplete rows, house_size missing",
+      "n": 20533,
+      "MAE": 163939.2569293418,
+      "RMSE": 700700.3839004184,
+      "R2": 0.15797960601513206,
+      "MdAPE": 0.42462810052455796
+    },
+    {
+      "model": "ridge_log",
+      "strategy": "B + imputed incomplete rows",
+      "evaluated_on": "test: incomplete rows, only bed/bath missing",
+      "n": 2156,
+      "MAE": 327876.4100421674,
+      "RMSE": 659429.5794112085,
+      "R2": 0.41477744863230503,
+      "MdAPE": 0.5100037505099809
+    }
+  ],
+  "incomplete_rows": {
+    "total": 114401,
+    "train": 68864,
+    "validation": 11518,
+    "calibration": 11330,
+    "test": 22689,
+    "house_size_missing": 103294
+  },
+  "geographic_holdout": {
+    "heldout_cities": 2341,
+    "heldout_rows_evaluated": 86139,
+    "results": [
+      {
+        "evaluation": "held-out cities (never seen)",
+        "city_size": "all",
+        "n": 86139,
+        "MAE": 211408.08079782434,
+        "MedAE": 102582.96941763378,
+        "MdAPE": 0.3332295486247501,
+        "R2": 0.4355305294041809,
+        "R2_log": 0.5248085198064674
+      },
+      {
+        "evaluation": "held-out cities (never seen)",
+        "city_size": "<30",
+        "n": 11145,
+        "MAE": 162814.80621626566,
+        "MedAE": 76612.60687362688,
+        "MdAPE": 0.31908219303725277,
+        "R2": 0.3769783518191733,
+        "R2_log": 0.5544005357883831
+      },
+      {
+        "evaluation": "held-out cities (never seen)",
+        "city_size": "30-99",
+        "n": 16165,
+        "MAE": 208673.46140634854,
+        "MedAE": 96849.31714537184,
+        "MdAPE": 0.31416277490129413,
+        "R2": 0.4040239214965564,
+        "R2_log": 0.5538018084584617
+      },
+      {
+        "evaluation": "held-out cities (never seen)",
+        "city_size": "100-499",
+        "n": 35079,
+        "MAE": 247034.93495593796,
+        "MedAE": 111555.55421724962,
+        "MdAPE": 0.32821409561582165,
+        "R2": 0.455124764079163,
+        "R2_log": 0.5118487689903714
+      },
+      {
+        "evaluation": "held-out cities (never seen)",
+        "city_size": "500+",
+        "n": 23750,
+        "MAE": 183451.14398360165,
+        "MedAE": 109094.31205077152,
+        "MdAPE": 0.3610296537210139,
+        "R2": 0.4040688451562351,
+        "R2_log": 0.4474971822853945
+      },
+      {
+        "evaluation": "seen cities (test split)",
+        "city_size": "all",
+        "n": 121948,
+        "MAE": 109057.89060099675,
+        "MedAE": 51692.460605307046,
+        "MdAPE": 0.15034468576082313,
+        "R2": 0.6688361595485317,
+        "R2_log": 0.8368594635524219
+      },
+      {
+        "evaluation": "seen cities (test split)",
+        "city_size": "<30",
+        "n": 13523,
+        "MAE": 112964.08440055644,
+        "MedAE": 54130.68562226927,
+        "MdAPE": 0.21569712116864292,
+        "R2": 0.5817007737650297,
+        "R2_log": 0.7431934309717196
+      },
+      {
+        "evaluation": "seen cities (test split)",
+        "city_size": "30-99",
+        "n": 18283,
+        "MAE": 97536.46388709522,
+        "MedAE": 47947.20507584937,
+        "MdAPE": 0.1530115496252994,
+        "R2": 0.754764872754707,
+        "R2_log": 0.8458955444373953
+      },
+      {
+        "evaluation": "seen cities (test split)",
+        "city_size": "100-499",
+        "n": 43089,
+        "MAE": 100313.10388362441,
+        "MedAE": 48930.80110710033,
+        "MdAPE": 0.13316723382581167,
+        "R2": 0.8030049006959878,
+        "R2_log": 0.861952302240097
+      },
+      {
+        "evaluation": "seen cities (test split)",
+        "city_size": "500+",
+        "n": 47053,
+        "MAE": 120420.11831705466,
+        "MedAE": 55543.471038328484,
+        "MdAPE": 0.151363521328392,
+        "R2": 0.5854971542016592,
+        "R2_log": 0.8305466462211263
+      }
+    ]
+  },
+  "interval_coverage": [
+    {
+      "nominal": 0.8,
+      "method": "normalised conformal (selected)",
+      "coverage": 0.8008698777857657,
+      "mean_width_$": 322062.3263910464,
+      "median_width_$": 199508.12325374974,
+      "median_hi/lo": 1.8202968841851646
+    },
+    {
+      "nominal": 0.8,
+      "method": "constant-width conformal",
+      "coverage": 0.8018619698058951,
+      "mean_width_$": 323488.10285292275,
+      "median_width_$": 238381.803818191,
+      "median_hi/lo": 1.925226947155397
+    },
+    {
+      "nominal": 0.9,
+      "method": "normalised conformal (selected)",
+      "coverage": 0.9022070452911575,
+      "mean_width_$": 448847.138445006,
+      "median_width_$": 276285.73192602926,
+      "median_hi/lo": 2.2640047411049915
+    },
+    {
+      "nominal": 0.9,
+      "method": "constant-width conformal",
+      "coverage": 0.901157440690151,
+      "mean_width_$": 476731.28712037526,
+      "median_width_$": 351308.3268227407,
+      "median_hi/lo": 2.577775432056735
+    }
+  ],
+  "conformal": {
+    "scale_floor": 0.03,
+    "quantiles_normalised": {
+      "0.2": 1.5427864480152267,
+      "0.1": 2.104617722132799
+    },
+    "quantiles_constant_log_width": {
+      "0.2": 0.32752192770845134,
+      "0.1": 0.4734633956788201
+    },
+    "calibration_rows": 69253,
+    "scale_model_fit_rows": 69769
+  },
+  "artifact_reload_identical_predictions": true,
+  "test_metrics_selected": {
+    "n": 139100.0,
+    "MAE": 106982.27139900427,
+    "RMSE": 383268.89895548037,
+    "R2": 0.6985771575544044,
+    "MedAE": 51125.441623987936,
+    "MdAPE": 0.14905708493367448,
+    "R2_log": 0.8393548493334668,
+    "predict_seconds": 1.9652869701385498
+  },
+  "support_policy_test_confirmation": [
+    {
+      "status": "limited",
+      "n": 35756,
+      "MAE": 126181.5274878163,
+      "MedAE": 51737.0482403323,
+      "MdAPE": 0.15829891800053114,
+      "median_log_bias": -0.007372432986627837,
+      "median_price": 349900.0
+    },
+    {
+      "status": "supported",
+      "n": 79934,
+      "MAE": 98694.20074691689,
+      "MedAE": 50529.55806298443,
+      "MdAPE": 0.13486839431805414,
+      "median_log_bias": -0.0033975933778363533,
+      "median_price": 393017.5
+    },
+    {
+      "status": "unsupported",
+      "n": 23410,
+      "MAE": 105957.49731922593,
+      "MedAE": 52153.11003655003,
+      "MdAPE": 0.19300526383475658,
+      "median_log_bias": -0.018672364488584996,
+      "median_price": 280000.0
+    }
+  ],
+  "artifacts": [
+    "models/house_price_model.joblib",
+    "models/location_support.csv",
+    "models/feature_schema.json",
+    "models/model_metadata.json",
+    "reports/location_evaluation.csv",
+    "reports/model_comparison.md"
+  ]
+}

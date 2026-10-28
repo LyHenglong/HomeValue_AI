@@ -1,0 +1,46 @@
+{
+  "raw_file": "data\\raw\\realtor-data.zip.csv.zip",
+  "raw_sha256": "4a31b6fec6b2a3ea32be7bf9571c8499ce05af90d3be0cf1b939c60388d127d1",
+  "raw_unchanged": true,
+  "raw_rows": 2226382,
+  "rows_in_scope_sold_after_location_checks": 811892,
+  "clean_rows": 696287,
+  "quarantined_rows": 704,
+  "incomplete_feature_rows": 114401,
+  "quarantined_by_reason": {
+    "implausible_acre_lot": 308,
+    "price_below_min": 113,
+    "zip_state_mismatch": 99,
+    "implausible_bed": 92,
+    "implausible_price_per_sqft": 51,
+    "implausible_house_size": 26,
+    "implausible_bath": 13,
+    "invalid_state": 1,
+    "price_above_review_cap": 1
+  },
+  "status_counts_after_location_checks": {
+    "for_sale": 1387723,
+    "sold": 811892,
+    "ready_to_build": 25061
+  },
+  "repeated_properties": {
+    "clean_rows": 696287,
+    "rows_without_property_key": 1752,
+    "distinct_property_groups": 696009,
+    "properties_with_multiple_sales": 196,
+    "rows_in_repeated_properties": 474,
+    "max_rows_one_property": 11
+  },
+  "sale_dates_in_clean": {
+    "min": "2021-10-18",
+    "max": "2022-05-06",
+    "rows_missing_date": 1,
+    "rows_before_2000": 0,
+    "rows_by_year_2015_plus": {
+      "2021": 215400,
+      "2022": 480886
+    }
+  },
+  "acre_lot_set_to_missing_because_zero": 870,
+  "acre_lot_missing_in_clean": 87989
+}

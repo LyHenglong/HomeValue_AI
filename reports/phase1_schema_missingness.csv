@@ -1,0 +1,13 @@
+,dtype,missing_pct,n_unique
+brokered_by,float64,0.2,110143
+status,object,0.0,3
+price,float64,0.07,102137
+bed,float64,21.62,99
+bath,float64,22.99,86
+acre_lot,float64,14.62,16057
+street,float64,0.49,2001358
+city,object,0.06,20098
+state,object,0.0,55
+zip_code,float64,0.01,30334
+house_size,float64,25.53,12061
+prev_sold_date,object,32.98,14954

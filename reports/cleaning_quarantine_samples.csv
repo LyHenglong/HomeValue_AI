@@ -1,0 +1,166 @@
+raw_row_id,quarantine_reason,status,price,bed,bath,house_size,acre_lot,city,state,zip_code
+1842317,implausible_acre_lot,sold,28000000.0,8.0,9.0,9690.0,3731.0,Three Forks,Montana,59752
+2190442,implausible_acre_lot,sold,15550000.0,2.0,1.0,2330.0,28274.29,Ashwood,Oregon,97711
+1938717,implausible_acre_lot,sold,11000000.0,5.0,7.0,5000.0,1146.72,Winona,Texas,75792
+1987902,implausible_acre_lot,sold,9996831.0,4.0,3.0,2300.0,2174.12,Marquez,Texas,77865
+1948269,implausible_acre_lot,sold,7900000.0,7.0,9.0,7032.0,1921.0,Breckenridge,Texas,76424
+1840677,implausible_acre_lot,sold,7250000.0,5.0,2.0,2560.0,1574.0,Springdale,Montana,59082
+2190904,implausible_acre_lot,sold,6900000.0,5.0,2.0,2207.0,9899.0,Hereford,Oregon,97837
+1841653,implausible_acre_lot,sold,6400000.0,2.0,1.0,672.0,3246.0,Helmville,Montana,59843
+2073579,implausible_acre_lot,sold,5895000.0,5.0,7.0,7339.0,50314.0,Pasadena,California,91105
+2091361,implausible_acre_lot,sold,5250000.0,5.0,6.0,6257.0,1095.0,Coto de Caza,California,92679
+2178704,implausible_acre_lot,sold,5150000.0,3.0,2.0,1232.0,6397.27,Fossil,Oregon,97830
+2190408,implausible_acre_lot,sold,4250000.0,4.0,4.0,5009.0,1473.24,Burns,Oregon,97720
+2002773,implausible_acre_lot,sold,4198081.0,4.0,4.0,3465.0,2127.26,Council,Idaho,83612
+1487241,implausible_acre_lot,sold,3950000.0,4.0,2.0,1222.0,2972.0,Town of Webb,New York,13420
+1426790,implausible_acre_lot,sold,3700000.0,9.0,8.0,6169.0,2295.68,Brookline,Massachusetts,02467
+1453796,implausible_acre_lot,sold,2550000.0,7.0,5.0,5586.0,8154.0,Weehawken,New Jersey,07086
+2138405,implausible_acre_lot,sold,1950000.0,3.0,2.0,2680.0,5376.0,Richmond,California,94801
+2099146,implausible_acre_lot,sold,1850000.0,3.0,3.0,2190.0,6277.0,Rancho Santa Fe,California,92067
+2099263,implausible_acre_lot,sold,1800000.0,3.0,2.0,1652.0,23086.0,Encinitas,California,92024
+2065504,implausible_acre_lot,sold,1550000.0,5.0,6.0,3973.0,49658.0,Santa Rosa,California,93012
+2176458,implausible_acre_lot,sold,1499900.0,2.0,2.0,1500.0,1726.46,Paskenta,California,96074
+2078332,implausible_acre_lot,sold,1499900.0,4.0,2.0,2209.0,59600.0,Ontario,California,91762
+2133928,implausible_acre_lot,sold,1400000.0,4.0,4.0,2457.0,5080.0,Hayward,California,94545
+1427706,implausible_acre_lot,sold,1280000.0,2.0,2.0,1280.0,2295.68,Somerville,Massachusetts,02145
+2115745,implausible_acre_lot,sold,1145000.0,2.0,2.0,1714.0,1714.0,Huntington Beach,California,92649
+1687915,implausible_bath,sold,12000000.0,15.0,23.0,19469.0,0.62,Reunion,Florida,34747
+2064438,implausible_bath,sold,8800000.0,16.0,38.0,29440.0,0.21,Los Angeles,California,90028
+2064587,implausible_bath,sold,7995000.0,12.0,21.0,15196.0,0.33,West Hollywood,California,90069
+2059321,implausible_bath,sold,7300000.0,18.0,32.0,20445.0,0.25,Los Angeles,California,90006
+2056648,implausible_bath,sold,5850000.0,20.0,26.0,11680.0,0.48,Downey,California,90241
+2055194,implausible_bath,sold,5750000.0,18.0,28.0,9443.0,0.17,Los Angeles,California,90034
+2053889,implausible_bath,sold,5450000.0,18.0,25.0,14764.0,1.18,Los Angeles,California,90031
+2188153,implausible_bath,sold,3100000.0,8.0,32.0,7228.0,0.16,Portland,Oregon,97203
+2067721,implausible_bath,sold,1200000.0,5.0,24.0,16870.0,0.26,Long Beach,California,90802
+2079456,implausible_bath,sold,527000.0,2.0,25.0,1351.0,3.22,Azusa,California,91702
+1491853,implausible_bath,sold,499900.0,6.0,113.0,3466.0,0.47,Buffalo,New York,14214
+1481511,implausible_bath,sold,450000.0,3.0,25.0,1905.0,0.06,Woodstock,New York,12498
+2011284,implausible_bath,sold,189900.0,2.0,175.0,1090.0,0.07,Phoenix,Arizona,85019
+1431160,implausible_bed,sold,24500000.0,84.0,72.0,72000.0,1.17,Lynn,Massachusetts,01902
+2060727,implausible_bed,sold,23000000.0,99.0,99.0,65895.0,0.91,Panorama City,California,91402
+1701716,implausible_bed,sold,19500000.0,32.0,32.0,33596.0,,North Bay Village,Florida,33141
+2058436,implausible_bed,sold,18500000.0,49.0,53.0,40876.0,0.37,Los Angeles,California,90028
+2051933,implausible_bed,sold,15650000.0,40.0,40.0,26155.0,0.5,Los Angeles,California,90025
+2115130,implausible_bed,sold,15250000.0,72.0,54.0,35874.0,1.58,Costa Mesa,California,92627
+1435348,implausible_bed,sold,15000000.0,99.0,30.0,999.0,0.56,Somerville,Massachusetts,02143
+2118973,implausible_bed,sold,14500000.0,54.0,54.0,31178.0,1.05,Van Nuys,California,91406
+2142324,implausible_bed,sold,11600000.0,96.0,1.0,816.0,2.39,Antioch,California,94509
+2056905,implausible_bed,sold,10700000.0,40.0,24.0,25688.0,0.94,Los Angeles,California,90066
+2118830,implausible_bed,sold,10600000.0,48.0,50.0,40392.0,0.86,Winnetka,California,91306
+2064250,implausible_bed,sold,10495000.0,21.0,19.0,12990.0,0.23,West Hollywood,California,90046
+2118752,implausible_bed,sold,9995000.0,40.0,40.0,26869.0,0.37,Encino,California,91436
+2065245,implausible_bed,sold,9575000.0,30.0,30.0,16224.0,0.31,Los Angeles,California,90066
+2057007,implausible_bed,sold,9350000.0,49.0,40.0,28022.0,0.87,Arcadia,California,91007
+2063286,implausible_bed,sold,9000000.0,23.0,22.0,11485.0,0.16,Los Angeles,California,90025
+2065369,implausible_bed,sold,8750000.0,37.0,20.0,11888.0,0.31,Venice,California,90291
+2118832,implausible_bed,sold,8350000.0,36.0,36.0,25908.0,0.56,Woodland Hills,California,91303
+2056562,implausible_bed,sold,8250000.0,22.0,22.0,16282.0,0.26,Los Angeles,California,90049
+2057588,implausible_bed,sold,7260000.0,48.0,48.0,16530.0,0.67,Bell Gardens,California,90201
+2053334,implausible_bed,sold,7250000.0,21.0,23.0,15554.0,0.31,Santa Monica,California,90403
+1480385,implausible_bed,sold,7050000.0,64.0,64.0,29760.0,2.86,Troy,New York,12182
+2071641,implausible_bed,sold,6999000.0,29.0,29.0,16734.0,0.66,Monrovia,California,91016
+2076604,implausible_bed,sold,6500000.0,28.0,20.0,14136.0,0.36,Sherman Oaks,California,91423
+2051904,implausible_bed,sold,6400000.0,28.0,16.0,12123.0,0.36,Los Angeles,California,90025
+1473635,implausible_house_size,sold,1399000.0,4.0,3.0,52538.0,1.2,Wyckoff,New Jersey,07481
+2177866,implausible_house_size,sold,675000.0,2.0,2.0,927828.0,21.3,Haiku,Hawaii,96708
+2046707,implausible_house_size,sold,550000.0,4.0,3.0,333169.0,7.65,Espanola,New Mexico,87532
+2046780,implausible_house_size,sold,435000.0,1.0,1.0,54892.0,1.26,Chimayo,New Mexico,87522
+1414586,implausible_house_size,sold,399000.0,2.0,2.0,178.0,,Humacao,Puerto Rico,00791
+1644415,implausible_house_size,sold,350000.0,2.0,3.0,100.0,0.1,Atlanta,Georgia,30318
+1441939,implausible_house_size,sold,259900.0,1.0,1.0,190.0,0.35,Provincetown,Massachusetts,02657
+1441938,implausible_house_size,sold,259900.0,1.0,1.0,190.0,,Provincetown,Massachusetts,02657
+1598188,implausible_house_size,sold,247999.0,2.0,2.0,800900.0,,Pinehurst,North Carolina,28374
+1478474,implausible_house_size,sold,235000.0,3.0,2.0,60150.0,0.21,Bethlehem,New York,12054
+1521390,implausible_house_size,sold,175000.0,2.0,1.0,144.0,22.89,Equinunk,Pennsylvania,18417
+1936187,implausible_house_size,sold,160000.0,2.0,2.0,123.0,0.5,Dallas,Texas,75243
+1414934,implausible_house_size,sold,143000.0,4.0,3.0,147.0,,Trujillo Alto,Puerto Rico,00976
+1448170,implausible_house_size,sold,130000.0,1.0,1.0,215100.0,4.94,Montclair,New Jersey,07042
+1656422,implausible_house_size,sold,129000.0,4.0,2.0,217364.0,4.99,Eatonton,Georgia,31024
+2011957,implausible_house_size,sold,114900.0,1.0,1.0,161.0,0.05,Apache Junction,Arizona,85119
+1647332,implausible_house_size,sold,99900.0,2.0,2.0,82740.0,6.0,Atlanta,Georgia,30324
+1766317,implausible_house_size,sold,99000.0,1.0,1.0,186.0,,Lakeside,Ohio,43440
+1530331,implausible_house_size,sold,80000.0,1.0,1.0,192.0,0.06,Frederica,Delaware,19946
+1740025,implausible_house_size,sold,70000.0,1.0,1.0,192.0,0.28,Dunnellon,Florida,34431
+1464159,implausible_house_size,sold,67000.0,2.0,1.0,74340.0,,Philadelphia,Pennsylvania,19144
+1993233,implausible_house_size,sold,55000.0,1.0,1.0,128.0,6.43,Fort Davis,Texas,79734
+1525137,implausible_house_size,sold,50000.0,3.0,1.0,100.0,,Chester,Pennsylvania,19013
+1762717,implausible_house_size,sold,25000.0,1.0,1.0,100.0,0.25,Pennington Gap,Virginia,24277
+1553573,implausible_house_size,sold,20000.0,3.0,1.0,140.0,0.02,Baltimore,Maryland,21213
+1429932,implausible_price_per_sqft,sold,10000000.0,20.0,18.0,999.0,0.29,Cambridge,Massachusetts,02138
+1765650,implausible_price_per_sqft,sold,179900.0,3.0,2.0,38290.0,0.53,Bellefontaine,Ohio,43311
+1488918,implausible_price_per_sqft,sold,130200.0,1.0,1.0,40024.0,0.28,Buffalo,New York,14209
+2067831,implausible_price_per_sqft,sold,99000.0,1.0,1.0,31920.0,8.7,Carson,California,90745
+1889566,implausible_price_per_sqft,sold,19500.0,2.0,6.0,6260.0,0.14,Columbus,Kansas,66725
+1890497,implausible_price_per_sqft,sold,16900.0,3.0,2.0,7013.0,0.16,Medicine Lodge,Kansas,67104
+1485222,implausible_price_per_sqft,sold,15900.0,7.0,3.0,3228.0,0.1,Fulton,New York,13069
+1771499,implausible_price_per_sqft,sold,15000.0,6.0,2.0,3598.0,0.1,East Cleveland,Ohio,44112
+1772234,implausible_price_per_sqft,sold,11900.0,2.0,1.0,3165.0,0.14,Cleveland,Ohio,44105
+1655395,implausible_price_per_sqft,sold,11000.0,4.0,2.0,2280.0,1.01,Elko,Georgia,31025
+1477812,implausible_price_per_sqft,sold,10000.0,6.0,2.0,2112.0,0.14,Schenectady,New York,12307
+1501562,implausible_price_per_sqft,sold,10000.0,6.0,2.0,2400.0,0.15,Youngstown,Ohio,44511
+1487435,implausible_price_per_sqft,sold,10000.0,3.0,1.0,2190.0,1.14,Plymouth,New York,13832
+1484719,implausible_price_per_sqft,sold,9000.0,6.0,2.0,2862.0,,Syracuse,New York,13205
+1772354,implausible_price_per_sqft,sold,9000.0,4.0,2.0,2424.0,0.14,Cleveland,Ohio,44120
+1885624,implausible_price_per_sqft,sold,8900.0,4.0,2.0,1906.0,0.34,Parma,Missouri,63870
+1778092,implausible_price_per_sqft,sold,8317.0,6.0,2.0,2328.0,0.1,Akron,Ohio,44302
+1479714,implausible_price_per_sqft,sold,7900.0,5.0,2.0,2060.0,0.08,Schenectady,New York,12308
+1795772,implausible_price_per_sqft,sold,7900.0,4.0,2.0,2136.0,0.14,Creston,Iowa,50801
+1780441,implausible_price_per_sqft,sold,7500.0,4.0,2.0,1530.0,0.1,Warren,Ohio,44483
+1801766,implausible_price_per_sqft,sold,6800.0,3.0,1.0,1527.0,0.33,Fort Madison,Iowa,52627
+1838735,implausible_price_per_sqft,sold,6000.0,3.0,2.0,1825.0,0.19,Saint James,Minnesota,56081
+1501401,implausible_price_per_sqft,sold,5900.0,2.0,2.0,1408.0,0.03,East Liverpool,Ohio,43920
+1675145,implausible_price_per_sqft,sold,5500.0,3.0,1.0,1600.0,0.4,Defuniak Springs,Florida,32433
+2190394,implausible_price_per_sqft,sold,5200.0,3.0,3.0,1940.0,,Bend,Oregon,97701
+402035,invalid_state,for_sale,2500.0,,,,0.1,Cedartown,New Brunswick,30125
+2054444,price_above_review_cap,sold,295000000.0,21.0,49.0,,3.83,Los Angeles,California,90077
+1499003,price_below_min,sold,999.0,,,,0.07,McKeesport,Pennsylvania,15132
+1814065,price_below_min,sold,900.0,,,,0.39,Apple River,Illinois,61001
+1995421,price_below_min,sold,800.0,3.0,3.0,1416.0,,El Paso,Texas,79912
+1877213,price_below_min,sold,800.0,,,,0.13,Sullivan,Missouri,63080
+1757809,price_below_min,sold,750.0,,,,0.25,Crossville,Tennessee,38558
+1481051,price_below_min,sold,600.0,,,,0.14,Albany,New York,12205
+2218180,price_below_min,sold,515.0,3.0,2.0,3060.0,5.09,Raymond,Washington,98577
+2202238,price_below_min,sold,490.0,,,,0.35,Tacoma,Washington,98443
+2202237,price_below_min,sold,490.0,,,,0.34,Tacoma,Washington,98443
+1452841,price_below_min,sold,230.0,1.0,1.0,,,New York City,New York,10305
+1797695,price_below_min,sold,215.0,3.0,2.0,1572.0,0.53,Creston,Iowa,50801
+1874694,price_below_min,sold,100.0,,,,0.09,Saint Louis,Missouri,63133
+1703968,price_below_min,sold,36.0,,,,0.03,Aventura,Florida,33180
+1840603,price_below_min,sold,10.0,,,,77.94,Tolley,North Dakota,58787
+1455298,price_below_min,sold,9.0,,,,9.24,Howell,New Jersey,07731
+2226268,price_below_min,sold,7.0,,,,48.0,Richland,Washington,99362
+1830946,price_below_min,sold,2.0,4.0,4.0,4358.0,1.0,Brooklyn Park,Minnesota,55443
+1801724,price_below_min,sold,2.0,,,,9.4,Fairfield,Iowa,52556
+2005646,price_below_min,sold,1.0,4.0,2.0,2090.0,0.23,Boise,Idaho,83713
+1766997,price_below_min,sold,1.0,2.0,1.0,624.0,0.23,Port Washington,Ohio,43837
+1767123,price_below_min,sold,1.0,5.0,4.0,2244.0,4.72,Dundee,Ohio,44624
+1767167,price_below_min,sold,1.0,7.0,2.0,,353.0,Coshocton,Ohio,43812
+1776335,price_below_min,sold,1.0,2.0,1.0,990.0,0.57,Hartville,Ohio,44632
+1777549,price_below_min,sold,1.0,4.0,2.0,1920.0,2.17,Massillon,Ohio,44647
+1778256,price_below_min,sold,1.0,9.0,5.0,,32.2,Canton,Ohio,44718
+1241227,zip_state_mismatch,for_sale,5623830.0,,,,2045.03,Chama,Colorado,87520
+586373,zip_state_mismatch,for_sale,3250000.0,,,,10.0,Tuscaloosa,Alabama,45404
+339524,zip_state_mismatch,for_sale,2524627.0,,,,515.2,Wedgefield,South Carolina,28168
+1244767,zip_state_mismatch,for_sale,2446327.0,,,,8.64,Hobbs,New Mexico,82240
+1252032,zip_state_mismatch,for_sale,2400000.0,,,,118.0,Verdi,California,89439
+12860,zip_state_mismatch,for_sale,1875000.0,2.0,4.0,3084.0,0.25,Wrentham,Massachusetts,02893
+440807,zip_state_mismatch,for_sale,1550000.0,3.0,3.0,2116.0,,Amelia Island,Florida,30234
+1241767,zip_state_mismatch,for_sale,1520000.0,1.0,,600.0,152.0,Angel Fire,Colorado,87710
+1154603,zip_state_mismatch,for_sale,1402632.0,,,,2.3,Cheyenne Wells,Colorado,82009
+1372992,zip_state_mismatch,for_sale,1200000.0,3.0,2.0,2268.0,0.28,Gleneden Beach,Oregon,98388
+622436,zip_state_mismatch,for_sale,1200000.0,,,,233.0,Burnsville,North Carolina,29714
+1252619,zip_state_mismatch,for_sale,1199999.0,5.0,4.0,4233.0,18.85,Ca,Nevada,96120
+341531,zip_state_mismatch,for_sale,1193500.0,,,,341.0,Ridge Spring,South Carolina,02916
+323265,zip_state_mismatch,for_sale,1105170.0,,,,104.57,Newland,North Carolina,29657
+781185,zip_state_mismatch,for_sale,960000.0,,,14761.0,84.54,Hazel Green,Illinois,53811
+193958,zip_state_mismatch,for_sale,850000.0,3.0,4.0,4416.0,1.07,Pennsylvania,New Jersey,18064
+1122077,zip_state_mismatch,for_sale,686885.0,4.0,4.0,2534.0,,Austin,Tennessee,78748
+604738,zip_state_mismatch,for_sale,685000.0,,,,17.0,Summerdale,Alabama,38580
+293209,zip_state_mismatch,for_sale,660000.0,,,,,Elizabeth City,North Carolina,29709
+1167929,zip_state_mismatch,for_sale,649990.0,,,,31.25,Freedom,Idaho,83120
+745511,zip_state_mismatch,for_sale,629900.0,4.0,3.0,2900.0,0.22,Macomb Township,Michigan,40444
+841844,zip_state_mismatch,for_sale,550000.0,,,,2.25,Sturgis,South Dakota,70607
+1252685,zip_state_mismatch,for_sale,524000.0,1.0,1.0,384.0,0.17,South Lake Tahoe,Nevada,96150
+258722,zip_state_mismatch,for_sale,489900.0,,,,0.84,Boydton,Virginia,27850
+55457,zip_state_mismatch,for_sale,489000.0,2.0,2.0,1152.0,,Staten Island,New Jersey,10303

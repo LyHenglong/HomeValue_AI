@@ -1,0 +1,10 @@
+{
+  "created_utc": "2026-10-27T16:46:58+00:00",
+  "version": "1.0.0-no-zip",
+  "sha256": {
+    "house_price_model.joblib": "01a3732d5ba4a682ebce448adc7ac70957b1e1bf2349fd10840b569cfdd5b2e8",
+    "location_support.csv": "15ddd7268b43b3fb0edbef052541bc5f4a09e6cf9c60d4058cef5303e341bb54",
+    "feature_schema.json": "f3496db20942a3fb9e3b23e1c059489b1e071b607a11dd416a01464f3cbca560",
+    "model_metadata.json": "145603e8bf6d960679b329ec76a72dc115110740ad2f31c3caf95803f145193d"
+  }
+}

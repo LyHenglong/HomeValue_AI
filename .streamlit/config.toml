@@ -1,0 +1,20 @@
+# Used when the app is launched from the project root: streamlit run app/streamlit_app.py
+[client]
+showErrorDetails = false      # never show Python tracebacks to users
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false
+
+# HomeValue AI theme: navy text, teal accent, soft neutral background. app/styles.css builds on these colours.
+[theme]
+base = "light"
+primaryColor = "#0F766E"
+backgroundColor = "#F5F7FA"
+secondaryBackgroundColor = "#F1F4F8"
+textColor = "#0B1F33"
+linkColor = "#0F766E"
+borderColor = "#DCE3EB"
+showWidgetBorder = true
+baseRadius = "0.6rem"
+font = "sans serif"

@@ -1,0 +1,117 @@
+[
+  {
+    "check": "app loads without visible errors",
+    "passed": true,
+    "observed": "title shown"
+  },
+  {
+    "check": "supported location labelled",
+    "passed": true,
+    "observed": "Supported location: Houston, Texas.; Choose a location, enter the property details and press Estimate House Price."
+  },
+  {
+    "check": "optional ZIP field enabled after choosing a city",
+    "passed": true,
+    "observed": ""
+  },
+  {
+    "check": "no-ZIP estimate equals recorded v1 value",
+    "passed": true,
+    "observed": "metric=$327,000"
+  },
+  {
+    "check": "80% and 90% ranges display (v1 values)",
+    "passed": true,
+    "observed": "80%: $215,000 - $497,000; 90%: $185,000 - $579,000"
+  },
+  {
+    "check": "route shown: city-level (no ZIP)",
+    "passed": true,
+    "observed": ""
+  },
+  {
+    "check": "historical-price disclaimer visible",
+    "passed": true,
+    "observed": ""
+  },
+  {
+    "check": "changing an input hides the stale estimate",
+    "passed": true,
+    "observed": ""
+  },
+  {
+    "check": "changing state clears the selected city",
+    "passed": true,
+    "observed": "City  Choose a city"
+  },
+  {
+    "check": "limited city labelled in dropdown",
+    "passed": true,
+    "observed": "Alachua (limited coverage)"
+  },
+  {
+    "check": "limited city warning shown",
+    "passed": true,
+    "observed": "Limited coverage for Alachua, Florida: only 52 training rows; too few validation rows to verify accuracy. An estimate is shown, but treat it"
+  },
+  {
+    "check": "ZIP option keeps its leading zero",
+    "passed": true,
+    "observed": "['02474']"
+  },
+  {
+    "check": "selected ZIP displays with leading zero",
+    "passed": true,
+    "observed": ""
+  },
+  {
+    "check": "valid ZIP uses the ZIP-level path",
+    "passed": true,
+    "observed": "metric=$765,000"
+  },
+  {
+    "check": "80% and 90% ranges shown on ZIP path",
+    "passed": true,
+    "observed": ""
+  },
+  {
+    "check": "ZIP not associated with the city cannot be selected",
+    "passed": true,
+    "observed": "0 matching options for 77002 in Arlington, MA"
+  },
+  {
+    "check": "rare ZIP marked in dropdown",
+    "passed": true,
+    "observed": "85619 (few records: city-level estimate)"
+  },
+  {
+    "check": "rare ZIP uses city-level fallback (same estimate as no ZIP)",
+    "passed": true,
+    "observed": "no ZIP $328,000, ZIP 85619 $328,000"
+  },
+  {
+    "check": "reset clears inputs and result",
+    "passed": true,
+    "observed": ""
+  },
+  {
+    "check": "no traceback, path or secret anywhere in the session",
+    "passed": true,
+    "observed": "none found"
+  },
+  {
+    "check": "mobile 390px: estimate shown",
+    "passed": true,
+    "observed": "metric=$327,000"
+  },
+  {
+    "check": "mobile 390px: no horizontal page scroll",
+    "passed": true,
+    "observed": "scrollWidth=390, innerWidth=390"
+  },
+  {
+    "check": "mobile 390px: columns stack (result below inputs)",
+    "passed": true,
+    "observed": "inputs y=-359, result y=728"
+  }
+]

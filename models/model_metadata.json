@@ -1,0 +1,537 @@
+{
+  "version": "2.0.0-zip-hybrid",
+  "created_utc": "2026-10-28T05:22:05+00:00",
+  "data_period": "about Oct 2021 - May 2022 (prev_sold_date of sold-status records)",
+  "target": "price (recorded price of sold-status records; not a verified completed-sale price)",
+  "components": {
+    "no_zip": {
+      "model": "models/house_price_model.joblib (v1 hist_gb_log, unchanged)",
+      "intervals": "v1 normalised split-conformal calibration, unchanged"
+    },
+    "with_zip": {
+      "model": "models/zip_model.joblib: ZIP model if the ZIP has >= 5 training rows, otherwise the v1 model (city-level fallback)",
+      "intervals": "normalised split conformal; spread model fitted on the validation split, multipliers per route from the calibration split"
+    }
+  },
+  "v1_metadata": {
+    "created_utc": "2026-10-27T15:57:06+00:00",
+    "model_name": "hist_gb_log",
+    "seed": 42,
+    "versions": {
+      "python": "3.10.10",
+      "pandas": "2.2.3",
+      "numpy": "1.26.4",
+      "scikit-learn": "1.7.2",
+      "joblib": "1.4.2"
+    },
+    "model_file_mb": 2.92,
+    "training_rows": 418165,
+    "interval_levels": [
+      "0.8",
+      "0.9"
+    ],
+    "support_policy": {
+      "supported_min_train_rows": 100,
+      "limited_min_train_rows": 30,
+      "min_heldout_rows": 10,
+      "max_heldout_mdape": 0.25
+    },
+    "input_hashes": {
+      "sold_clean.parquet": "a8e1e48575aa2e5dbe38c288593d9ae980a1f065bf7a944ec2757500cb91ed35",
+      "sold_incomplete_features.parquet": "eaa83c3a4a754e7b04feaffd31b06a1f94ee218d27f9251ac20d4b3dd8571cd2"
+    }
+  },
+  "seed": 42,
+  "versions": {
+    "python": "3.10.10",
+    "pandas": "2.2.3",
+    "numpy": "1.26.4",
+    "scikit-learn": "1.7.2",
+    "joblib": "1.4.2"
+  },
+  "calibration": {
+    "zip_path": {
+      "multipliers": {
+        "zip": {
+          "0.8": 1.5520842659791958,
+          "0.9": 2.098997162965079
+        },
+        "fallback": {
+          "0.8": 1.5748946244522535,
+          "0.9": 2.191668681465014
+        }
+      },
+      "rows": {
+        "zip": {
+          "rows": 66546,
+          "pooled": false
+        },
+        "fallback": {
+          "rows": 2707,
+          "pooled": false
+        }
+      },
+      "min_route_rows": 500,
+      "scale_model_fit_rows": 69769
+    },
+    "no_zip_path": {
+      "multipliers": {
+        "0.8": 1.5427864480152267,
+        "0.9": 2.104617722132799
+      }
+    }
+  },
+  "support_policy": {
+    "supported_min_train_rows": 100,
+    "limited_min_train_rows": 30,
+    "min_heldout_rows": 10,
+    "max_heldout_mdape": 0.25,
+    "evidence": "validation split only; error = worse of the no-ZIP and with-ZIP paths",
+    "status_counts": [
+      {
+        "status": "limited",
+        "cities": 1665,
+        "rows": 180864
+      },
+      {
+        "status": "supported",
+        "cities": 770,
+        "rows": 400065
+      },
+      {
+        "status": "unsupported",
+        "cities": 13655,
+        "rows": 115358
+      }
+    ]
+  },
+  "evaluation_test_split_reporting_only": {
+    "no_zip": {
+      "metrics": {
+        "n": 139100.0,
+        "MAE": 106982.27139900427,
+        "RMSE": 383268.89895548037,
+        "R2": 0.6985771575544044,
+        "MedAE": 51125.441623987936,
+        "MdAPE": 0.14905708493367448,
+        "R2_log": 0.8393548493334668
+      },
+      "coverage": {
+        "0.8": [
+          {
+            "group": "all",
+            "value": "all",
+            "n": 139100,
+            "coverage": 0.8008698777857657,
+            "median_width": 199508.12325374974,
+            "mean_width": 322062.3263910464
+          },
+          {
+            "group": "price_band",
+            "value": "1-2M",
+            "n": 8219,
+            "coverage": 0.7251490448959728,
+            "median_width": 786987.3380591075,
+            "mean_width": 893923.1634471834
+          },
+          {
+            "group": "price_band",
+            "value": "100-200k",
+            "n": 21118,
+            "coverage": 0.8055687091580642,
+            "median_width": 129903.5672853407,
+            "mean_width": 146847.88449834703
+          },
+          {
+            "group": "price_band",
+            "value": "200-400k",
+            "n": 51504,
+            "coverage": 0.8441480273376825,
+            "median_width": 167201.0691264535,
+            "mean_width": 187937.8794060947
+          },
+          {
+            "group": "price_band",
+            "value": "400-700k",
+            "n": 36176,
+            "coverage": 0.8160106147722247,
+            "median_width": 253024.333155837,
+            "mean_width": 291608.60565994534
+          },
+          {
+            "group": "price_band",
+            "value": "700k-1M",
+            "n": 12624,
+            "coverage": 0.7885773130544994,
+            "median_width": 415430.07162698376,
+            "mean_width": 484916.84336005
+          },
+          {
+            "group": "price_band",
+            "value": "<100k",
+            "n": 6810,
+            "coverage": 0.5458149779735683,
+            "median_width": 114881.4073437282,
+            "mean_width": 129307.75471595812
+          },
+          {
+            "group": "price_band",
+            "value": ">2M",
+            "n": 2649,
+            "coverage": 0.6644016610041525,
+            "median_width": 1927448.7198502575,
+            "mean_width": 2687663.2677642265
+          },
+          {
+            "group": "support_status",
+            "value": "limited",
+            "n": 36086,
+            "coverage": 0.7893088732472427,
+            "median_width": 192183.27156766312,
+            "mean_width": 359308.4288141861
+          },
+          {
+            "group": "support_status",
+            "value": "supported",
+            "n": 79604,
+            "coverage": 0.8056630320084418,
+            "median_width": 199458.07693148762,
+            "mean_width": 307602.4703558484
+          },
+          {
+            "group": "support_status",
+            "value": "unsupported",
+            "n": 23410,
+            "coverage": 0.8023921401110636,
+            "median_width": 208554.2202638791,
+            "mean_width": 313817.96619388665
+          }
+        ],
+        "0.9": [
+          {
+            "group": "all",
+            "value": "all",
+            "n": 139100,
+            "coverage": 0.9022070452911575,
+            "median_width": 276285.73192602926,
+            "mean_width": 448847.138445006
+          },
+          {
+            "group": "price_band",
+            "value": "1-2M",
+            "n": 8219,
+            "coverage": 0.8464533398223628,
+            "median_width": 1091317.7665405753,
+            "mean_width": 1245734.4532804147
+          },
+          {
+            "group": "price_band",
+            "value": "100-200k",
+            "n": 21118,
+            "coverage": 0.8927455251444265,
+            "median_width": 181572.20678903934,
+            "mean_width": 205917.61805132157
+          },
+          {
+            "group": "price_band",
+            "value": "200-400k",
+            "n": 51504,
+            "coverage": 0.9401017396707052,
+            "median_width": 230957.57140950282,
+            "mean_width": 260831.93929005435
+          },
+          {
+            "group": "price_band",
+            "value": "400-700k",
+            "n": 36176,
+            "coverage": 0.9199192835028749,
+            "median_width": 348633.33255410637,
+            "mean_width": 403865.3985131646
+          },
+          {
+            "group": "price_band",
+            "value": "700k-1M",
+            "n": 12624,
+            "coverage": 0.8995564005069708,
+            "median_width": 572747.8907665581,
+            "mean_width": 673016.139965509
+          },
+          {
+            "group": "price_band",
+            "value": "<100k",
+            "n": 6810,
+            "coverage": 0.6682819383259911,
+            "median_width": 162885.5569655184,
+            "mean_width": 184160.9304858527
+          },
+          {
+            "group": "price_band",
+            "value": ">2M",
+            "n": 2649,
+            "coverage": 0.7859569648924122,
+            "median_width": 2681191.8655378195,
+            "mean_width": 3795002.9002794805
+          },
+          {
+            "group": "support_status",
+            "value": "limited",
+            "n": 36086,
+            "coverage": 0.8934766945629884,
+            "median_width": 265758.7712308994,
+            "mean_width": 502345.4740117939
+          },
+          {
+            "group": "support_status",
+            "value": "supported",
+            "n": 79604,
+            "coverage": 0.9070649716094669,
+            "median_width": 275467.24721127027,
+            "mean_width": 426937.3684137701
+          },
+          {
+            "group": "support_status",
+            "value": "unsupported",
+            "n": 23410,
+            "coverage": 0.8991456642460487,
+            "median_width": 292302.6668231553,
+            "mean_width": 440883.2083426302
+          }
+        ]
+      }
+    },
+    "with_zip": {
+      "metrics": {
+        "n": 139100.0,
+        "MAE": 98281.27737800233,
+        "RMSE": 352287.73930165864,
+        "R2": 0.7453380500681284,
+        "MedAE": 47737.86281150111,
+        "MdAPE": 0.13784491749765238,
+        "R2_log": 0.8604463775702961
+      },
+      "coverage": {
+        "0.8": [
+          {
+            "group": "all",
+            "value": "all",
+            "n": 139100,
+            "coverage": 0.8041912293314163,
+            "median_width": 187710.79770496837,
+            "mean_width": 300662.83761152625
+          },
+          {
+            "group": "price_band",
+            "value": "1-2M",
+            "n": 8219,
+            "coverage": 0.7454678184694001,
+            "median_width": 747956.481812672,
+            "mean_width": 838917.2897698439
+          },
+          {
+            "group": "price_band",
+            "value": "100-200k",
+            "n": 21118,
+            "coverage": 0.8060895918174069,
+            "median_width": 120283.61682194202,
+            "mean_width": 136391.74883308253
+          },
+          {
+            "group": "price_band",
+            "value": "200-400k",
+            "n": 51504,
+            "coverage": 0.8422840944392669,
+            "median_width": 156903.60361595976,
+            "mean_width": 175076.0478132477
+          },
+          {
+            "group": "price_band",
+            "value": "400-700k",
+            "n": 36176,
+            "coverage": 0.817171605484299,
+            "median_width": 241244.595729464,
+            "mean_width": 270348.6262708682
+          },
+          {
+            "group": "price_band",
+            "value": "700k-1M",
+            "n": 12624,
+            "coverage": 0.7930925221799746,
+            "median_width": 384078.03087191586,
+            "mean_width": 444542.4382429456
+          },
+          {
+            "group": "price_band",
+            "value": "<100k",
+            "n": 6810,
+            "coverage": 0.5722466960352423,
+            "median_width": 106689.42085090613,
+            "mean_width": 120242.5569724105
+          },
+          {
+            "group": "price_band",
+            "value": ">2M",
+            "n": 2649,
+            "coverage": 0.7025292563231408,
+            "median_width": 1804330.9647351636,
+            "mean_width": 2574108.845367467
+          },
+          {
+            "group": "support_status",
+            "value": "limited",
+            "n": 36086,
+            "coverage": 0.7914703763232278,
+            "median_width": 187509.70121183165,
+            "mean_width": 338917.550301663
+          },
+          {
+            "group": "support_status",
+            "value": "supported",
+            "n": 79604,
+            "coverage": 0.8097457414200292,
+            "median_width": 181027.7199241449,
+            "mean_width": 279315.5213651174
+          },
+          {
+            "group": "support_status",
+            "value": "unsupported",
+            "n": 23410,
+            "coverage": 0.80491243058522,
+            "median_width": 211013.38725310247,
+            "mean_width": 314284.0336962276
+          },
+          {
+            "group": "zip_route",
+            "value": "ZIP model",
+            "n": 133616,
+            "coverage": 0.8047988264878457,
+            "median_width": 185423.08273054048,
+            "mean_width": 298939.81112264853
+          },
+          {
+            "group": "zip_route",
+            "value": "city-level fallback",
+            "n": 5484,
+            "coverage": 0.7893873085339168,
+            "median_width": 242452.18497782078,
+            "mean_width": 342643.85645504994
+          }
+        ],
+        "0.9": [
+          {
+            "group": "all",
+            "value": "all",
+            "n": 139100,
+            "coverage": 0.9017397555715313,
+            "median_width": 257390.88878665783,
+            "mean_width": 414537.9215641471
+          },
+          {
+            "group": "price_band",
+            "value": "1-2M",
+            "n": 8219,
+            "coverage": 0.8550918603236404,
+            "median_width": 1025378.5876250127,
+            "mean_width": 1155243.112646902
+          },
+          {
+            "group": "price_band",
+            "value": "100-200k",
+            "n": 21118,
+            "coverage": 0.8896675821574013,
+            "median_width": 165870.0769310149,
+            "mean_width": 189810.3321840004
+          },
+          {
+            "group": "price_band",
+            "value": "200-400k",
+            "n": 51504,
+            "coverage": 0.9350147561354458,
+            "median_width": 214462.3725464606,
+            "mean_width": 240697.5313627097
+          },
+          {
+            "group": "price_band",
+            "value": "400-700k",
+            "n": 36176,
+            "coverage": 0.9190900044228217,
+            "median_width": 329079.6201727699,
+            "mean_width": 370608.63826961844
+          },
+          {
+            "group": "price_band",
+            "value": "700k-1M",
+            "n": 12624,
+            "coverage": 0.9025665399239544,
+            "median_width": 524170.62609488115,
+            "mean_width": 609980.5211838348
+          },
+          {
+            "group": "price_band",
+            "value": "<100k",
+            "n": 6810,
+            "coverage": 0.6859030837004405,
+            "median_width": 149842.0718127652,
+            "mean_width": 170371.22579685054
+          },
+          {
+            "group": "price_band",
+            "value": ">2M",
+            "n": 2649,
+            "coverage": 0.8097395243488109,
+            "median_width": 2492318.4839705657,
+            "mean_width": 3584077.4825285953
+          },
+          {
+            "group": "support_status",
+            "value": "limited",
+            "n": 36086,
+            "coverage": 0.8918694230449482,
+            "median_width": 256471.6285700649,
+            "mean_width": 467286.1703726895
+          },
+          {
+            "group": "support_status",
+            "value": "supported",
+            "n": 79604,
+            "coverage": 0.9061479322647104,
+            "median_width": 247152.09738514447,
+            "mean_width": 382883.9071052636
+          },
+          {
+            "group": "support_status",
+            "value": "unsupported",
+            "n": 23410,
+            "coverage": 0.901964972234088,
+            "median_width": 295197.2486588621,
+            "mean_width": 440864.82718054607
+          },
+          {
+            "group": "zip_route",
+            "value": "ZIP model",
+            "n": 133616,
+            "coverage": 0.9022347623039157,
+            "median_width": 253672.99946021475,
+            "mean_width": 411041.7003329275
+          },
+          {
+            "group": "zip_route",
+            "value": "city-level fallback",
+            "n": 5484,
+            "coverage": 0.8896790663749088,
+            "median_width": 351663.00424696354,
+            "mean_width": 499722.2935609805
+          }
+        ]
+      }
+    }
+  },
+  "backup": {
+    "path": "models/backups/v1_no_zip",
+    "sha256": {
+      "house_price_model.joblib": "01a3732d5ba4a682ebce448adc7ac70957b1e1bf2349fd10840b569cfdd5b2e8",
+      "location_support.csv": "15ddd7268b43b3fb0edbef052541bc5f4a09e6cf9c60d4058cef5303e341bb54",
+      "feature_schema.json": "f3496db20942a3fb9e3b23e1c059489b1e071b607a11dd416a01464f3cbca560",
+      "model_metadata.json": "145603e8bf6d960679b329ec76a72dc115110740ad2f31c3caf95803f145193d"
+    }
+  }
+}

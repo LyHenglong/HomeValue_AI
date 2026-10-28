@@ -1,0 +1,12 @@
+# secrets
+.env
+
+# python / notebooks
+__pycache__/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# large data files: regenerate with `python src/data_cleaning.py` (raw zip is the downloaded source)
+data/raw/*.zip
+data/raw/*.csv
+data/processed/*.parquet

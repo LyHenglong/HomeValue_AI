@@ -1,0 +1,10 @@
+,rows
+price<=0,280
+price<1000,1226
+price>=50M,140
+bed>20,725
+bath>20,401
+house_size<200,152
+house_size>50000,156
+acre_lot==0,2226
+acre_lot>1000,1719

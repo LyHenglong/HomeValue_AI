@@ -1,0 +1,52 @@
+{
+  "inputs": {
+    "state": "string, must exist in location_support.csv",
+    "city": "string, must be supported or limited",
+    "bed": "integer (1, 20)",
+    "bath": "number (1, 20)",
+    "house_size": "square feet (200, 50000)",
+    "acre_lot": "acres, optional (missing allowed), 0 < x <= 1000",
+    "zip_code": "optional 5-character string (leading zeros kept); must be listed for the chosen state and city in zip_city_map.csv; ZIPs with fewer than 5 training rows use the city-level model"
+  },
+  "model_features": [
+    "state",
+    "city_key",
+    "bed",
+    "bath",
+    "log_house_size",
+    "log_acre_lot",
+    "bed_missing",
+    "bath_missing",
+    "size_missing",
+    "lot_missing"
+  ],
+  "excluded": [
+    "price_per_sqft (derived from the target)",
+    "prev_sold_date / sold_year (meaning unverified)",
+    "street, brokered_by, raw_row_id, property_key (identifiers)",
+    "zip_code (not a user-facing input; high cardinality)"
+  ],
+  "target": "price (recorded price of sold-status records; not a verified completed-sale price)",
+  "output": "estimate in dollars + conformal interval",
+  "training_ranges": {
+    "house_size_p0.5": 572.0,
+    "house_size_p99.5": 6241.0,
+    "acre_lot_p99.5": 28.751799999999932,
+    "price_p0.5": 36900.0,
+    "price_p99.5": 3850000.0
+  },
+  "version": "2.0.0-zip-hybrid",
+  "zip_model_features": [
+    "state",
+    "city_key",
+    "bed",
+    "bath",
+    "log_house_size",
+    "log_acre_lot",
+    "bed_missing",
+    "bath_missing",
+    "size_missing",
+    "lot_missing",
+    "zip_key"
+  ]
+}

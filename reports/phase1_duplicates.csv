@@ -1,0 +1,8 @@
+,value
+rows,2226382
+full_row_duplicates,0
+rows_missing_street_or_zip,11098
+distinct_addresses,2044747
+addresses_with_multiple_rows,143795
+rows_in_repeated_addresses,314332
+max_rows_one_address,98

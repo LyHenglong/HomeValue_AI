@@ -1,0 +1,20 @@
+step,rule,removed,remaining
+raw rows read,,0,2226382
+all: missing_location,missing_location,1606,2224776
+all: invalid_state,invalid_state,1,2224775
+all: zip_state_mismatch,zip_state_mismatch,99,2224676
+all: status_not_sold,status_not_sold,1412784,811892
+sold: missing_price,missing_price,245,811647
+sold: nonpositive_price,nonpositive_price,0,811647
+sold: price_int32_sentinel,price_int32_sentinel,0,811647
+sold: price_below_min,price_below_min,113,811534
+sold: price_above_review_cap,price_above_review_cap,1,811533
+sold: missing_bed,missing_bed,69802,741731
+sold: missing_bath,missing_bath,10449,731282
+sold: missing_house_size,missing_house_size,34447,696835
+sold: implausible_bed,implausible_bed,92,696743
+sold: implausible_bath,implausible_bath,13,696730
+sold: implausible_house_size,implausible_house_size,26,696704
+sold: implausible_price_per_sqft,implausible_price_per_sqft,51,696653
+sold: implausible_acre_lot,implausible_acre_lot,308,696345
+sold: exact_duplicate_sale,exact_duplicate_sale,58,696287
