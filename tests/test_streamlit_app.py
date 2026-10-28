@@ -57,10 +57,11 @@ def test_app_starts_without_exceptions():
     at = new_app()
     assert not at.exception
     text = page_text(at)
-    assert appmod.APP_NAME == "HomeValue AI" and appmod.TAGLINE in text and "Ready to estimate" in text
+    assert appmod.APP_NAME == "HomeValue AI" and appmod.TAGLINE in text
     assert "Your estimate will appear here" in text    # empty state before any estimate
     assert at.button(key="estimate").disabled          # nothing to estimate until a location is chosen
-    assert appmod.DISCLOSURE in page_text(at)
+    assert at.button(key="estimate").label == "Estimate Home Value"
+    assert appmod.DISCLOSURE in text
 
 
 def test_artifacts_load_and_policy_columns_present(art):
@@ -102,10 +103,12 @@ def test_unsupported_city_is_not_offered(picks):
 # ---- estimates -----------------------------------------------------------------------------------------
 def test_supported_location_shows_estimate_and_both_ranges(picks):
     at = choose(new_app(), *picks["supported"])
-    assert any("Supported location" in s.value for s in at.success)
+    assert not any("(limited)" in o for o in at.selectbox(key="city").options if o.startswith(picks["supported"][1]))
+    assert not at.warning                                                    # a supported city needs no warning
     at.button(key="estimate").click().run()
     assert not at.exception
     assert at.metric and at.metric[0].value.startswith("$")
+    assert not any("Limited coverage" in w.value for w in at.warning)
     text = page_text(at)
     assert "80% prediction range" in text and "90% prediction range" in text
     assert "not a guarantee" in text and appmod.DISCLOSURE in text
@@ -113,7 +116,7 @@ def test_supported_location_shows_estimate_and_both_ranges(picks):
 
 def test_limited_location_shows_prominent_warning(picks):
     at = choose(new_app(), *picks["limited"])
-    assert any("Limited coverage" in w.value for w in at.warning)          # before estimating
+    assert any(o.startswith(picks["limited"][1]) and "(limited)" in o for o in at.selectbox(key="city").options)
     at.button(key="estimate").click().run()
     assert at.metric                                                         # an estimate is still shown...
     assert any(w.value.startswith("**Limited coverage") for w in at.warning)  # ...with the pipeline's warning, prominently
@@ -270,5 +273,30 @@ def test_range_bar_uses_displayed_rounded_values_and_escapes():
 def test_result_card_shows_location_and_model_status(picks):
     at = choose(new_app(), *picks["limited"])
     at.button(key="estimate").click().run()
+    warnings = [w.value for w in at.warning if "Limited coverage" in w.value]
+    assert len(warnings) == 1                                                # shown once, not repeated in the form and the card
+    assert "hv-pill" not in page_text(at)
+
+
+def test_page_is_simplified_one_disclosure_and_collapsed_expanders(picks):
+    at = new_app()
+    assert [e.label for e in at.expander] == ["About this estimate", "Location coverage", "Model limitations"]
+    assert not any(e.proto.expanded for e in at.expander)                    # secondary explanations start collapsed
+    assert page_text(at).count(appmod.DISCLOSURE) == 1
+    at = choose(at, *picks["supported"])
+    at.button(key="estimate").click().run()
     text = page_text(at)
-    assert "Limited coverage</span>" in text and "<b>Model</b>" in text
+    assert text.count(appmod.DISCLOSURE) == 1                                # still one copy next to the estimate
+    assert appmod.NOTE in text and "Estimated Home Value" in [m.label for m in at.metric]
+    assert not at.warning                                                    # nothing to caution about for this estimate
+
+
+def test_lot_size_field_only_appears_when_included(picks):
+    def has_lot(at):
+        return any(n.key == "acre_lot" for n in at.number_input)
+    at = choose(new_app(), *picks["supported"])
+    assert not has_lot(at)                                                   # hidden until the user opts in
+    at.checkbox(key="lot_known").check().run()
+    assert has_lot(at) and at.number_input(key="acre_lot").value == appmod.DEFAULTS["acre_lot"]
+    at.checkbox(key="lot_known").uncheck().run()
+    assert not has_lot(at)

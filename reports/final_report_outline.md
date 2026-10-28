@@ -1,141 +1,85 @@
-# Final report outline: House Price Recommendation System
+# Final report: status, evidence and remaining work
 
-This is an outline for the academic write-up. Each section lists the evidence that already exists in this repository;
-use those figures directly rather than restating them from memory. A section marked **To write** has no prose yet.
-The technical reports listed are complete; summarise them, don't duplicate them.
+Last updated 2026-10-28. The academic report is `reports/final_report.md` (about 14,400 words, 12 figures, 23 numbered
+tables, references and appendices A to F). It is a **draft for the student to review**: names, dates and the
+academic-integrity statement are placeholders, and a few facts about the dataset could not be verified (below). Numbers in
+the report come from the project's own result files and were checked by a script (`reports/verify_final_report.py`).
 
-## 1. Introduction and objective
+## 1. Section status
 
-- **Points:**
-  - Goal: estimate the *recorded price* of U.S. homes with honest uncertainty ranges.
-  - Course aim: show warehousing and data-mining methods end to end.
-  - Scope: sold-status records with complete core features.
-  - Out of scope: market valuation and appraisal.
-- **Evidence:** `README.md` (Objective and scope).
-- **To write:** motivation and research questions.
+| Report section | Status | Notes |
+|---|---|---|
+| Title page | **Placeholders** | Student name and ID, instructor, institution, submission date |
+| Abstract | Written | |
+| 1. Introduction | Written | Research questions were formulated while writing; the report says they were not pre-registered |
+| 2. Dataset and data preparation | Written | Owner, version, licence field and educational-use terms **verified via Kaggle's public metadata** (as returned by a fetch tool; recheck in a browser). Data dictionary still unverified |
+| 3. Data warehouse and ETL | Written | Schema diagram as a PNG (Figure 2) plus the Mermaid source; DDL in Appendix A |
+| 4. Exploratory data analysis | Written | Figures regenerate from project files; the notebook has no stored outputs |
+| 5. ML methodology | Written | |
+| 6. Results and evaluation | Written | Discloses repeated use of the test split (Section 6.8) |
+| 7. Application | Written | Final HomeValue AI screenshots (Figures 10 to 12) |
+| 8. Testing and validation | Written | Chromium-only; no contrast measurement |
+| 9. Limitations, ethics, risks | Written | |
+| 10. Conclusion and future work | Written | Separates completed work from proposed work |
+| References | Written | 14 entries, each checked against a web source; some without DOI (see Section 3 below) |
+| Appendices A to E | Written | A schema DDL, B four analytical SQL queries with live results, C reproducibility, D further tables, E evidence map |
+| Appendix F | **Placeholder** | Academic-integrity / AI-use statement; your course's wording is needed |
 
-## 2. Dataset and target definition
+## 2. What you still need to do
 
-- **Points:**
-  - Source: Realtor.com USA Real Estate dataset, 2,226,382 rows and 12 columns.
-  - Why the target is "recorded price of sold-status records", not a verified sale price.
-  - The date window is 2021-10-18 to 2022-05-06.
-- **Evidence:**
-  - `reports/phase1_schema_missingness.csv`, `phase1_status_summary.csv` and `phase1_price_distribution.png`
-  - `notebooks/01_data_exploration.ipynb`
-  - `reports/cleaning_summary.json`
+1. Fill the bracketed placeholders (title page, Appendix F) and delete the draft box at the top of the report.
+2. Write the AI-use statement your course requires. This project was built with an AI coding assistant, and the report cannot
+   make that declaration for you.
+3. Open the dataset's Kaggle page in a browser and confirm the licence wording quoted in Section 2.1 and the README (the page could
+   not be rendered by the tools used). Note which dataset version you downloaded, and confirm that `realtor-data.zip.csv` is offered
+   there. Decide whether publishing derived statistics and models fits the "educational purposes only" terms, and keep the
+   repository private if in doubt.
+4. Read the whole report and make sure you can explain every section. Adapt its length and format to your course template,
+   and convert to PDF or Word if required. The Mermaid block renders only in some viewers; the PNG diagram works everywhere.
+5. Optional: run `notebooks/01_data_exploration.ipynb` so the notebook stores its outputs. The report does not depend on them.
 
-## 3. Data cleaning and quality
+## 3. Facts that could not be verified (the report says so wherever they appear)
 
-- **Points:**
-  - The rule-by-rule waterfall from 2,226,382 rows to 696,287 clean rows.
-  - Quarantine instead of deletion (704 rows).
-  - Missing-value strategy (no target imputation).
-  - Leading-zero ZIP restoration.
-  - Known quality limits.
-- **Evidence:**
-  - `reports/cleaning_report.md`, `cleaning_waterfall.csv`, `cleaning_exclusions_by_reason.csv`, `cleaning_missingness.csv`
-  - `reports/cleaning_quarantine_samples.csv`
+- **Dataset provenance, partly verified.** From Kaggle's public metadata endpoint (retrieved 2026-10-28 with a fetch tool): owner
+  Ahmed Shahriar Sakib, version 25, last updated 2024-03-30, licence "Other (specified in description)", the description's
+  "educational purposes only" and "I do not own any data, and all rights are reserved to the respective owners" statements, and
+  Realtor.com (Move, Inc.) named as the source. **Not verified:** the data dictionary, the update schedule, the exact file list, which
+  version was downloaded, and the wording itself in a rendered page.
+- **Meaning of `price` and `prev_sold_date`** for sold-status records.
+- **ZIP-to-city and state/ZIP mappings:** derived from the dataset itself, not an official source.
+- **References:** DOIs were not verified for Hoerl & Kennard (1970) and Kaufman et al. (2012), so none is given. McKinney (2010)
+  is cited by its proceedings URL, with no page range, because neither the DOI nor the end page could be confirmed.
+- **Rollback browser run:** an earlier 12-check browser run of the rolled-back app (previous interface) was not saved and is not relied on.
+- **Real-device and cross-browser behaviour, and colour contrast:** not tested.
 
-## 4. Data warehouse design and ETL
+## 4. Evidence summary (actual results, 2026-10-28)
 
-- **Points:**
-  - Star schema: fact grain, three dimensions, staging and audit layers.
-  - Transactional, rerunnable load.
-  - 52 validation checks passed on the local PostgreSQL 17.2 server.
-- **Evidence:**
-  - `reports/warehouse_schema.md` (includes an ER diagram in Mermaid)
-  - `reports/warehouse_etl.md`
-  - `reports/warehouse_validation.md` / `.json`
-  - `sql/create_warehouse.sql`, `sql/load_warehouse.sql`
-- **To write:**
-  - One example analytical SQL query over the star schema, if the course expects OLAP-style queries.
-  - Its output. This has not been produced yet.
+- **Automated tests:** `python -m pytest tests -q -p no:warnings` gave **138 passed, 0 failed, 0 skipped**. By file: model
+  pipeline 37, application 34, ZIP experiment 34, ZIP integration 33.
+- **Real browser (Chromium via Playwright), final interface:** **89 of 89** functional and layout checks (56 desktop at 1366 px,
+  33 mobile at 390 px) and **11 of 11** model-load failure checks, in
+  `reports/figures/app_screenshots/browser_check_results.json`, tagged with the SHA-256 of the app files that were tested.
+- **Model integrity:** the 11 production and backup model files have the same SHA-256 hashes as before the interface restyle and
+  before the report work.
+- **Rollback (isolated copy, live `models/` untouched):** **105 passed, 33 skipped** (the 33 v2 integration tests skip
+  themselves). The restored v1 reproduces the recorded test MAE ($106,982.27) and R2 (0.698577) exactly. All 400 requests
+  (200 cities at two range levels) give estimates and ranges identical to the live no-ZIP path; 6 differ only in status label. Rollback
+  was re-verified against the final interface.
+- **Analytical SQL:** the four queries in `sql/example_analytical_query.sql` ran on the live PostgreSQL 17.2 warehouse, and each
+  result matched an independent pandas calculation on the cleaned Parquet file. Results are saved in
+  `reports/example_query_results/`.
+- **Report numbers:** 48 claim checks against the source files (headline metrics, cleaning counts, splits, coverage, the
+  ZIP experiment, warehouse checks and test counts), plus checks for broken tables, figure links, placeholders, secrets and
+  machine-specific paths, all passed.
 
-## 5. Methodology
+## 5. Where the evidence lives
 
-- **Points:**
-  - Property-grouped hash split (60/10/10/20) and what each split was used for.
-  - Leakage safeguards.
-  - Size-adjusted hierarchical location encoding, including the Florida bias that motivated it.
-  - Log target.
-  - Candidate models.
-  - Split-conformal prediction ranges.
-  - Location-support policy.
-- **Evidence:**
-  - `reports/model_comparison.md` (design, leakage controls and development note)
-  - `reports/experiment_summary.json` (configuration and seed)
-  - `src/model_common.py`
-  - `reports/location_policy.md`
-
-## 6. Results
-
-- **Points:**
-  - The model comparison table (MAE, RMSE, R2, median % error).
-  - Performance by price band, state and city size.
-  - Geographic hold-out (33.3% median error on unseen cities against 15.0% on seen).
-  - Missing-data experiment.
-  - Interval coverage (80.1% / 90.2%) overall and by group.
-- **Evidence:**
-  - `reports/model_comparison.md`
-  - `reports/figures/actual_vs_predicted_and_residuals.png`, `reports/figures/interval_coverage_and_geographic_holdout.png`
-  - `reports/location_evaluation.csv`
-
-## 7. Model improvement: ZIP code (v2)
-
-- **Points:**
-  - The pre-registered decision rule.
-  - Why the plain ZIP model failed on unseen ZIPs.
-  - The hybrid design.
-  - Test results for the hybrid: MAE $98,281, R2 0.745, median error 13.8%, coverage 80.4% / 90.2%.
-  - Integration decisions and rollback.
-- **Evidence:**
-  - `reports/zip_feature_experiment.md` (experiment and integration)
-  - `reports/zip_experiment_validation.json`, `reports/zip_integration.json`
-
-## 8. Web application
-
-- **Points:**
-  - Inputs and validation.
-  - Location and ZIP policy in the UI.
-  - How results and uncertainty are presented.
-  - Safe error handling.
-  - Test coverage.
-- **Evidence:**
-  - `app/streamlit_app.py`
-  - `tests/test_streamlit_app.py`, `tests/test_zip_integration.py`
-  - `reports/figures/app_screenshots/` (browser check results and screenshots)
-- **To do:** retake the screenshots after the final UI restyle. The current ones show the pre-restyle look.
-
-## 9. Testing and validation
-
-- **Points:**
-  - The automated suite (count and what it covers).
-  - The real-browser check and the two defects it found.
-  - The isolated rollback verification.
-- **Evidence:**
-  - `README.md` (Tests; Rollback)
-  - `reports/figures/app_screenshots/browser_check_results.json`
-
-## 10. Limitations and ethics
-
-- **Points:**
-  - Historical, unverified target.
-  - Uneven geographic coverage.
-  - Weaker range coverage for very cheap and very expensive homes.
-  - ZIP-city pairs are not verified.
-  - The test split has been viewed several times for reporting, though it was never used for a decision.
-  - Not an appraisal.
-- **Evidence:** the `README.md` limitations, `reports/zip_feature_experiment.md` (limitations sections) and
-  `reports/model_comparison.md`.
-
-## 11. Conclusion and future work
-
-- **To write:**
-  - A summary.
-  - Next steps: a fresh hold-out set or newer data, property detail features, and a verified ZIP-city reference.
-
-## Appendix
-
-- Reproduction commands and requirements (`README.md`).
-- Environment versions (`models/model_metadata.json`).
+| Report content | Source in the project |
+|---|---|
+| Raw profile, cleaning | `reports/phase1_*.csv`, `reports/cleaning_*.csv`, `reports/cleaning_summary.json` |
+| Warehouse | `sql/create_warehouse.sql`, `sql/load_warehouse.sql`, `reports/warehouse_schema.md`, `reports/warehouse_etl.md`, `reports/warehouse_validation.json` |
+| Models, intervals, geography | `reports/experiment_summary.json`, `reports/model_comparison.md` |
+| ZIP experiment and integration | `reports/zip_experiment_validation.json`, `reports/zip_integration.json`, `reports/zip_feature_experiment.md`, `reports/location_policy.md`, `models/model_metadata.json` |
+| Application and tests | `app/`, `tests/`, `reports/figures/app_screenshots/` |
+| Figures 1 to 9 | `reports/figures/make_report_figures.py` (run from the project root) |
+| Screenshots (Figures 10 to 12 and the rest) | `reports/figures/app_screenshots/`, captured with `tests/browser_check.py`: desktop `desktop_01` to `desktop_06` and `desktop_error_model_load_failure`; mobile `mobile_01` to `mobile_05_expanders_open` and `mobile_error_model_load_failure` |

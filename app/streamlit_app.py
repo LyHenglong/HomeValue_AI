@@ -39,7 +39,6 @@ INPUT_KEYS = ["state", "city", "zip", *DEFAULTS]
 
 APP_NAME = "HomeValue AI"
 TAGLINE = "Smarter Insights for Every Home"
-INTRO = "Estimate a home's recorded price using property characteristics and historical real-estate data."
 # Inline SVG icons (no image files or network requests).
 HOUSE_ICON = ('<svg viewBox="0 0 24 24" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round" '
               'stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/>'
@@ -190,23 +189,22 @@ def esc(text) -> str:
 
 
 def range_html(estimate: float, r80: tuple, r90: tuple) -> str:
-    """Range bar (90% track, 80% band, estimate marker) plus the two ranges as text. Ends use the displayed (outward
-    rounded) values, so the bar never shows a narrower range than the calibrated one."""
+    """Range bar (90% track, 80% band, estimate marker) plus the two ranges as text. The bar uses the displayed (outward
+    rounded) ends, so it never shows a narrower range than the calibrated one."""
     lo90, hi90 = math.floor(r90[0] / 1000) * 1000, math.ceil(r90[1] / 1000) * 1000
     lo80, hi80 = math.floor(r80[0] / 1000) * 1000, math.ceil(r80[1] / 1000) * 1000
     span = max(hi90 - lo90, 1)
 
     def pct(v):
         return max(0.0, min(100.0, (v - lo90) / span * 100))
-    label = (f"Estimate {usd(estimate)}. 80% prediction range {usd_range(*r80)}. 90% prediction range {usd_range(*r90)}.")
-    return (f'<div class="hv-range" role="img" aria-label="{esc(label)}">'
-            f'<div class="hv-bar"><div class="hv-bar-80" style="left:{pct(lo80):.2f}%;width:{pct(hi80) - pct(lo80):.2f}%"></div>'
+    label = f"Estimate {usd(estimate)}. 80% prediction range {usd_range(*r80)}. 90% prediction range {usd_range(*r90)}."
+    return (f'<div class="hv-bar" role="img" aria-label="{esc(label)}">'
+            f'<div class="hv-bar-80" style="left:{pct(lo80):.2f}%;width:{pct(hi80) - pct(lo80):.2f}%"></div>'
             f'<div class="hv-bar-est" style="left:{pct(estimate):.2f}%"></div></div>'
-            f'<div class="hv-bar-ends"><span>{esc(usd(lo90))}</span><span>{esc(usd(hi90))}</span></div></div>'
             '<div class="hv-ranges">'
-            f'<div class="hv-rtile"><div class="hv-rtile-k"><span class="hv-sw hv-sw-80"></span>80% prediction range</div>'
+            f'<div class="hv-rtile"><div class="hv-rtile-k"><span class="hv-sw hv-sw-80"></span>80% Prediction Range</div>'
             f'<div class="hv-rtile-v">{esc(usd_range(*r80))}</div></div>'
-            f'<div class="hv-rtile"><div class="hv-rtile-k"><span class="hv-sw hv-sw-90"></span>90% prediction range</div>'
+            f'<div class="hv-rtile"><div class="hv-rtile-k"><span class="hv-sw hv-sw-90"></span>90% Prediction Range</div>'
             f'<div class="hv-rtile-v">{esc(usd_range(*r90))}</div></div></div>')
 
 
@@ -216,6 +214,7 @@ def range_html(estimate: float, r80: tuple, r90: tuple) -> str:
 # Widgets take their values from session state (no `value=` argument) and callbacks ASSIGN values instead of deleting
 # keys: deleting a key reset the server side only, while the browser kept showing the old selection (real-browser check).
 WIDGET_DEFAULTS = {"state": None, "city": None, "zip": None, **DEFAULTS, "lookup_state": None, "lookup_city": ""}
+NOTE = ("Based on historical recorded prices (Oct 2021 - May 2022). Not an appraisal or a guaranteed current market value.")
 
 
 def html_block(markup: str) -> None:
@@ -270,119 +269,75 @@ def result_is_current() -> bool:
     return res is not None and res["status"] != "error" and res["inputs"] == current_inputs()
 
 
-def section(step: int, title: str) -> None:
-    html_block(f'<div class="hv-section"><span class="hv-step">{step}</span>{esc(title)}</div>')
+def displayed_estimate() -> dict | None:
+    """The result currently shown as an estimate (current inputs, not an error or rejection), else None."""
+    res = st.session_state.get("result")
+    return res if result_is_current() and res["status"] not in ("error", "rejected") else None
 
 
-def render_header(art) -> None:
-    version = (art.metadata or {}).get("version", "") if art is not None else ""
-    ready = (f'<div class="hv-ready" role="status" title="{esc("Model version " + version) if version else ""}">'
-             '<span class="hv-dot"></span>Ready to estimate</div>') if art is not None else ""
-    html_block('<div class="hv-header"><div class="hv-brand">'
+def render_header() -> None:
+    html_block('<div class="hv-brand">'
                f'<span class="hv-logo">{HOUSE_ICON.format(c="#FFFFFF")}</span>'
                f'<div><h1 class="hv-name">HomeValue <span class="hv-ai">AI</span></h1>'
-               f'<div class="hv-tagline">{esc(TAGLINE)}</div></div></div>{ready}</div>'
-               f'<div class="hv-intro"><p class="hv-lead">{esc(INTRO)}</p>'
-               '<p class="hv-sub">Estimates are of the <b>recorded price</b> in historical sold-status records '
-               '(Oct 2021 - May 2022), with 80% and 90% prediction ranges. Not an appraisal or a current market value.</p></div>')
-
-
-def render_facts(art) -> None:
-    """Fact strip built only from the dataset size, location_support.csv and model_metadata.json."""
-    counts = art.support.status.value_counts()
-    nz, wz = evaluation_stats(art.metadata, "no_zip"), evaluation_stats(art.metadata, "with_zip")
-    facts = [("Training data", "~696,000", "cleaned sold-status records"),
-             ("Data period", "Oct 2021 - May 2022", "historical, not current prices"),
-             ("Cities offered", f"{int(counts.get('supported', 0)):,} supported",
-              f"+ {int(counts.get('limited', 0)):,} with limited coverage")]
-    if nz:
-        facts.append(("Median error (test)", f"{nz['mdape']:.1%}",
-                      f"{wz['mdape']:.1%} with the home's ZIP" if wz else "on held-out homes"))
-    html_block('<div class="hv-facts">' + "".join(
-        f'<div class="hv-fact"><div class="hv-fact-k">{esc(k)}</div><div class="hv-fact-v">{esc(v)}</div>'
-        f'<div class="hv-fact-s">{esc(s)}</div></div>' for k, v, s in facts) + "</div>")
+               f'<div class="hv-tagline">{esc(TAGLINE)}</div></div></div>')
 
 
 def render_inputs(art, choices: dict) -> None:
     _init_state()
-    html_block('<div class="hv-card-title">Property details</div>'
-               '<p class="hv-card-sub">Pick a listed location, then describe the home.</p>')
-    section(1, "Location")
-    state = st.selectbox("State or territory", sorted(choices), index=None, placeholder="Choose a state",
-                         key="state", on_change=_on_state_change,
-                         help="Only states with at least one city that passed the reliability checks are listed.")
+    html_block('<div class="hv-card-title">Property Details</div>')
+    c1, c2 = st.columns(2)
+    state = c1.selectbox("State", sorted(choices), index=None, placeholder="Choose a state", key="state",
+                         on_change=_on_state_change)
     cities = choices.get(state, [])
     status_of = {c: (s, r) for c, s, r in cities}
-    city = st.selectbox("City", [c for c, _, _ in cities], index=None, key="city", disabled=state is None,
+    city = c2.selectbox("City", [c for c, _, _ in cities], index=None, key="city", disabled=state is None,
                         on_change=_on_city_change, placeholder="Choose a city" if state else "Choose a state first",
-                        format_func=lambda c: f"{c}  (limited coverage)" if status_of.get(c, ("",))[0] == "limited" else c)
-    if state:
-        n_sup = sum(s == "supported" for _, s, _ in cities)
-        st.caption(f"{n_sup} supported and {len(cities) - n_sup} limited-coverage cities in {state}. "
-                   "Cities without enough reliable data are not offered.")
-    if city in status_of:
-        s, reason = status_of[city]
-        if s == "supported":
-            st.success(f"Supported location: {city}, {state}.")
-        else:
-            st.warning(f"Limited coverage for {city}, {state}: {reason}. An estimate is shown, but treat it with extra caution.")
+                        format_func=lambda c: f"{c}  (limited)" if status_of.get(c, ("",))[0] == "limited" else c)
 
+    row = st.columns(2)
+    size_col = row[0]
     if art.zip_enabled:
         opts = pr.zip_options(art, state, city) if city in status_of else None
         route = dict(zip(opts.zip_code, opts.route)) if opts is not None else {}
-        st.selectbox("ZIP code (optional)", list(route), index=None, key="zip", disabled=not route,
-                     placeholder="Optional: choose a ZIP code" if route else "Choose a city first",
-                     format_func=lambda z: z if route.get(z) == "zip_model" else f"{z}  (few records: city-level estimate)",
-                     help="Only ZIP codes recorded for the selected city are listed. A ZIP adds neighbourhood detail when "
-                          "the data has enough records for it; otherwise the city-level estimate is used. Leave it empty "
-                          "for a city-level estimate.")
+        row[0].selectbox("ZIP code (optional)", list(route), index=None, key="zip", disabled=not route,
+                         placeholder="Optional" if route else "Choose a city first",
+                         format_func=lambda z: z if route.get(z) == "zip_model" else f"{z}  (few records)",
+                         help="Only ZIP codes recorded for the selected city are listed. ZIPs marked (few records) use the city-level estimate.")
+        size_col = row[1]
+    size_col.number_input("House size (sq ft)", min_value=200, max_value=50_000, step=50, key="house_size")
 
-    section(2, "Home")
-    c1, c2 = st.columns(2)
-    c1.number_input("Bedrooms", min_value=1, max_value=20, step=1, key="bed")
-    c2.number_input("Bathrooms", min_value=1.0, max_value=20.0, step=0.5, format="%.1f", key="bath",
-                    help="The training data contains whole bathroom counts only.")
-    st.number_input("House size (square feet)", min_value=200, max_value=50_000, step=50,
-                    key="house_size", help="Interior living area, 200-50,000 sq ft.")
-    lot_known = st.checkbox("I know the lot size", key="lot_known")
-    st.number_input("Lot size (acres)", min_value=0.01, max_value=1000.0, step=0.05,
-                    format="%.2f", key="acre_lot", disabled=not lot_known,
-                    help="Optional. Leave unchecked if unknown; the model handles a missing lot size.")
+    with st.container(key="hv_pair"):
+        b1, b2 = st.columns(2)
+        b1.number_input("Bedrooms", min_value=1, max_value=20, step=1, key="bed")
+        b2.number_input("Bathrooms", min_value=1.0, max_value=20.0, step=0.5, format="%.1f", key="bath",
+                        help="The training data contains whole bathroom counts only.")
+    if st.checkbox("Include lot size", key="lot_known"):
+        st.number_input("Lot size (acres)", min_value=0.01, max_value=1000.0, step=0.05, format="%.2f", key="acre_lot")
 
     if st.session_state.pop("pending", False) and state and city:
         with st.spinner("Estimating..."):
             st.session_state["result"] = run_estimate(load_artifacts(), current_inputs())
-    current = result_is_current()
-    b1, b2 = st.columns([3, 2])
-    b1.button("Estimate House Price", type="primary", key="estimate", on_click=_request_estimate,
-              disabled=not (state and city) or current, use_container_width=True)
-    b2.button("Reset inputs", key="reset", on_click=_reset, use_container_width=True)
-    if current:
-        st.caption("The estimate is up to date. Change any input to estimate again.")
-    elif not (state and city):
-        st.caption("Choose a state and a city to enable the estimate.")
+    with st.container(key="hv_actions"):
+        a1, a2 = st.columns([3, 1.2])
+        a1.button("Estimate Home Value", type="primary", key="estimate", on_click=_request_estimate,
+                  disabled=not (state and city) or result_is_current(), use_container_width=True)
+        a2.button("Reset", key="reset", on_click=_reset, use_container_width=True)
 
 
 def render_empty_state() -> None:
-    steps = ["Choose a state and a city", "Add the home's size and rooms", "Press Estimate House Price"]
     html_block('<div class="hv-empty">'
                f'<div class="hv-empty-icon">{HOUSE_ICON.format(c="#0F766E")}</div>'
                '<div class="hv-empty-title">Your estimate will appear here</div>'
-               '<p>Choose a location, enter the property details and press <b>Estimate House Price</b>.</p>'
-               '<ol class="hv-steps">' + "".join(f'<li><span class="hv-step">{i}</span>{esc(s)}</li>'
-                                                 for i, s in enumerate(steps, 1)) + '</ol>'
-               '<p>You will see the estimated recorded price with its 80% and 90% prediction ranges.</p></div>')
+               '<p>Enter the property details, then press <b>Estimate Home Value</b>.</p></div>')
 
 
 def render_result(art) -> None:
     res = st.session_state.get("result")
-    if res is None or res["status"] != "ok" or res["inputs"] != current_inputs():
-        html_block('<div class="hv-card-title">Estimated price</div>')   # a shown estimate carries its own label
     if res is None:
         render_empty_state()
         return
     if res["inputs"] != current_inputs():
-        st.info("The inputs have changed since the last estimate. Press **Estimate House Price** to update it.")
+        st.info("Inputs changed since the last estimate. Press **Estimate Home Value** to update it.")
         return
     if res["status"] == "error":
         st.error("Something went wrong while producing the estimate, so no price is shown. Please try again; "
@@ -394,55 +349,74 @@ def render_result(art) -> None:
 
     inp, path = res["inputs"], res.get("model_path", "no_zip")
     stats = evaluation_stats(art.metadata, "no_zip" if path == "no_zip" else "with_zip")
-    st.metric("Estimated Recorded Price", usd(res["estimate"]),
-              help="An estimate of the historical recorded price in the dataset - not an appraisal or current market value.")
+    st.metric("Estimated Home Value", usd(res["estimate"]))
     st.caption(f"{inp['city']}, {inp['state']}" + (f" {inp['zip']}" if inp.get("zip") else "")
                + f" · {inp['bed']} bed · {inp['bath']:g} bath · {inp['house_size']:,} sq ft"
-               + (f" · {inp['acre_lot']:g} acres" if inp.get("acre_lot") else "") + md(" · rounded to the nearest $1,000"))
+               + (f" · {inp['acre_lot']:g} acres" if inp.get("acre_lot") else ""))
     html_block(range_html(res["estimate"], res["r80"], res["r90"]))
-    if stats:
-        mode_txt = "with a ZIP code" if path != "no_zip" else "without a ZIP code"
-        st.caption(f"How to read the ranges: when tested on {stats['test_rows']:,} held-out homes estimated {mode_txt}, "
-                   f"{stats['cov80']:.1%} fell inside their 80% range and {stats['cov90']:.1%} inside their 90% range. "
-                   "That is an average over many homes, not a guarantee for this property.")
-    else:
-        st.caption("How to read the ranges: they are built so that, on average over many held-out homes, about 80% (or 90%) "
-                   "fall inside them. That is not a guarantee for this property.")
 
-    limited = res.get("location_status") == "limited"
-    loc_pill = ('<span class="hv-pill hv-pill-warn"><b>Location</b> Limited coverage</span>' if limited
-                else '<span class="hv-pill hv-pill-ok"><b>Location</b> Supported</span>')
-    route_label = {"zip_model": f"ZIP-level detail ({res.get('zip_code') or inp.get('zip')})",
-                   "zip_fallback": "City-level (ZIP has few records)"}.get(path, "City-level")
-    html_block(f'<hr class="hv-rule"><div class="hv-status">{loc_pill}<span class="hv-pill"><b>Model</b> {esc(route_label)}</span></div>')
+    # Status and warnings: only what changes how this particular estimate should be read.
     if path == "zip_model":
-        st.caption(f"Model used: ZIP-level detail ({res.get('zip_code') or inp.get('zip')}).")
+        st.caption(f"Includes ZIP-level detail ({res.get('zip_code') or inp.get('zip')}).")
     elif path == "zip_fallback":
         st.info(md(res.get("path_note") or "This ZIP has too few records, so the city-level estimate is used."))
-    else:
-        st.caption("Model used: city-level (no ZIP selected). Choosing a ZIP can add neighbourhood detail where the data allows.")
-
     messages = res.get("messages", [])
-    if limited:
+    if res.get("location_status") == "limited":
         pipeline_note = next((m for m in messages if m.startswith("Limited coverage")), "Limited-coverage location.")
-        extra = (f"In testing, ranges in limited-coverage cities contained the recorded price somewhat less often "
-                 f"({stats['limited80']:.0%} for the 80% range) and errors were larger than in supported cities."
-                 if stats else "In testing, ranges in limited-coverage cities were less reliable than in supported cities.")
-        st.warning(md(f"**{pipeline_note}**  \n{extra}"))
+        st.warning(md(f"**{pipeline_note}**"))
         messages = [m for m in messages if m != pipeline_note]
     for m in messages:
         st.warning(md(m))
     caution = price_caution(res["estimate"], stats)
     if caution:
         st.warning(md(caution))
-    st.info(DISCLOSURE)
+    st.caption(NOTE)
 
 
-def render_city_lookup(art) -> None:
-    with st.expander("Why isn't my city listed?"):
-        st.write("A city is offered only if the model had enough training records for it and its held-out error was "
-                 "acceptable. You can check any city's status here; no estimate is produced for unlisted cities.")
-        s = st.selectbox("State", sorted(art.support.state.unique()), index=None, key="lookup_state", placeholder="Choose a state")
+def render_about_estimate(art) -> None:
+    nz, wz = evaluation_stats(art.metadata, "no_zip"), evaluation_stats(art.metadata, "with_zip")
+    res = displayed_estimate()
+    with st.expander("About this estimate"):
+        acc = (f" The median error on held-out test homes was {nz['mdape']:.1%} of the recorded price without a ZIP"
+               + (f" and {wz['mdape']:.1%} with the home's ZIP" if wz else "") + ".") if nz else ""
+        st.markdown(md("A gradient-boosting model estimates the **recorded price** from the location, bedrooms, bathrooms, "
+                       "house size and, optionally, lot size. It was trained on about 696,000 cleaned sold-status records "
+                       "from October 2021 to May 2022." + acc + " Estimates are rounded to the nearest $1,000."))
+        st.markdown("The **80% and 90% prediction ranges** were calibrated on separate held-out homes so that about 80% "
+                    "(or 90%) of their recorded prices fell inside. That is an average over many homes, not a guarantee "
+                    "for any one property. Range ends are rounded outward to whole thousands.")
+        if res:
+            path = res.get("model_path", "no_zip")
+            zip_code = res.get("zip_code") or res["inputs"].get("zip")
+            route = {"zip_model": f"ZIP-level detail ({zip_code})",
+                     "zip_fallback": "city-level (the ZIP has too few records)"}.get(path, "city-level (no ZIP selected)")
+            stats = wz if path != "no_zip" else nz
+            mode_txt = "with a ZIP code" if path != "no_zip" else "without a ZIP code"
+            st.markdown(f"Model used: {route}." + (
+                f" In testing, {stats['cov80']:.1%} of {stats['test_rows']:,} held-out homes estimated {mode_txt} fell inside "
+                f"their 80% range and {stats['cov90']:.1%} inside their 90% range." if stats else ""))
+        st.markdown(DISCLOSURE)
+        if art.metadata and art.metadata.get("version"):
+            st.caption(f"Model version {art.metadata['version']}.")
+
+
+def render_location_coverage(art) -> None:
+    counts = art.support.status.value_counts()
+    nz = evaluation_stats(art.metadata, "no_zip")
+    with st.expander("Location coverage"):
+        st.markdown(
+            f"- **Supported** ({int(counts.get('supported', 0)):,} cities): at least 100 training records and acceptable "
+            "held-out error.\n"
+            f"- **Limited coverage** ({int(counts.get('limited', 0)):,} cities): at least 30 training records, but too few "
+            "to verify accuracy or a larger held-out error. An estimate is shown with a warning"
+            + (md(f"; in testing, the 80% range contained {nz['limited80']:.0%} of recorded prices there.") if nz else ".") + "\n"
+            "- **Not offered**: fewer than 30 training records. No estimate is given rather than a guess.\n"
+            + ("- **ZIP codes** are optional and must belong to the chosen city. A ZIP with at least 5 training records adds "
+               "neighbourhood detail; with fewer, the city-level estimate is used. Any other ZIP is rejected."
+               if art.zip_enabled else "- **ZIP codes** are not used by the installed model."))
+        st.markdown("**Check a city**")
+        s = st.selectbox("State to check", sorted(art.support.state.unique()), index=None, key="lookup_state",
+                         placeholder="Choose a state")
         q = st.text_input("City name", key="lookup_city", max_chars=80)
         if s and q.strip():
             sup = art.support
@@ -456,103 +430,48 @@ def render_city_lookup(art) -> None:
                 st.write(f"**{r.city}, {r.state}:** {label}. Reason: {r.reason}.")
 
 
-def render_about(art) -> None:
-    html_block('<div class="hv-info-title">About the estimates</div>')
-    nz, wz = evaluation_stats(art.metadata, "no_zip"), evaluation_stats(art.metadata, "with_zip")
-    with st.container(key="hv_about"):
-        t1, t2, t3, t4 = st.tabs(["How it works", "Prediction ranges", "Cities and ZIP codes", "Model limitations"])
-    with t1:
-        acc = ""
-        if nz:
-            acc = (f" On held-out test homes the median error was {nz['mdape']:.1%} of the recorded price without a ZIP"
-                   + (f" and {wz['mdape']:.1%} with the home's ZIP" if wz else "") + ".")
-        zip_txt = ("3. **Optional ZIP.** If you choose a ZIP with at least 5 training records, a second model adds "
-                   "neighbourhood detail; ZIPs with fewer records use the city-level model. A ZIP must belong to the chosen city.\n"
-                   if art.zip_enabled else "")
-        st.markdown(
-            "1. **Data.** About 696,000 cleaned U.S. sold-status records (Oct 2021 - May 2022) from a PostgreSQL data warehouse.\n"
-            "2. **Model.** A gradient-boosting model predicts the logarithm of the recorded price from state, city, bedrooms, "
-            "bathrooms, house size and (optionally) lot size. Locations are summarised from training data only." + acc + "\n"
-            + zip_txt +
-            f"{4 if art.zip_enabled else 3}. **Ranges.** Split conformal prediction: separate held-out homes were used to "
-            "calibrate how wide the 80% and 90% ranges must be, scaled to how uncertain each kind of home is.\n"
-            f"{5 if art.zip_enabled else 4}. **Location policy.** Cities need at least 30 training records to be offered; "
-            "'supported' cities also need at least 100 records and acceptable held-out error. Everything else is refused "
-            "rather than guessed.")
-        if art.metadata and art.metadata.get("version"):
-            st.caption(f"Model version {art.metadata['version']}.")
-    with t2:
-        st.markdown("The **estimate** is the model's single best guess. The **80% and 90% prediction ranges** show the "
-                    "uncertainty around it: they were calibrated so that, over many held-out homes, about 80% (or 90%) of "
-                    "recorded prices fell inside them. They describe an average over many homes, **not a guarantee for any "
-                    "one property**, and the 90% range is always the wider of the two. Displayed range ends are rounded "
-                    "outward to whole thousands.")
-        rows = [(label, s) for label, s in (("Without a ZIP", nz), ("With the home's ZIP", wz)) if s]
-        if rows:
-            st.markdown(md("| Held-out test homes | Inside 80% range | Inside 90% range | 80% range, recorded under $100k | "
-                           "80% range, recorded over $2M |\n|---|---|---|---|---|\n" + "\n".join(
-                               f"| {label} ({s['test_rows']:,}) | {s['cov80']:.1%} | {s['cov90']:.1%} | "
-                               f"{s['band80']['<100k']:.0%} | {s['band80']['>2M']:.0%} |" for label, s in rows)))
-            st.caption(md(f"Coverage was weaker at the extremes of the market and in limited-coverage cities "
-                          f"({nz['limited80']:.0%} for the 80% range without a ZIP), so the app warns in those cases."
-                          if nz else "Coverage was weaker at the extremes of the market and in limited-coverage cities."))
-    with t3:
-        counts = art.support.status.value_counts()
-        st.markdown(
-            f"- **Supported** ({int(counts.get('supported', 0)):,} cities): at least 100 training records and acceptable "
-            "held-out error. Estimates are shown normally.\n"
-            f"- **Limited coverage** ({int(counts.get('limited', 0)):,} cities): at least 30 training records but too few to "
-            "verify accuracy, or larger held-out error. An estimate is shown with a warning.\n"
-            "- **Not offered**: fewer than 30 training records. No estimate is given; use *Why isn't my city listed?* to "
-            "check a city.\n"
-            + ("- **ZIP codes** are optional. Only ZIPs recorded for the chosen city are listed, with leading zeros kept. A "
-               "ZIP with at least 5 training records uses the ZIP-level model; a ZIP with fewer records is labelled and uses "
-               "the city-level estimate. A ZIP that does not belong to the chosen city is rejected, never substituted."
-               if art.zip_enabled else "- **ZIP codes** are not used by the installed model."))
-    with t4:
-        no_city = sorted(set(art.support.state) - set(art.support[art.support.status != "unsupported"].state))
-        st.markdown(
-            "- **Historical data.** Prices are recorded prices from about October 2021 to May 2022, not current values; the "
-            "source does not document them as verified completed-sale prices.\n"
-            "- **Location coverage.** Only cities with enough reliable data are offered. Cities absent from training were "
-            "estimated far less accurately in testing, so they are refused."
-            + (f" No city is available in: {', '.join(no_city)}." if no_city else "") + "\n"
-            "- **ZIP codes.** Only ZIPs recorded for the chosen city in this dataset are accepted, and the dataset's own "
-            "ZIP-city pairs may contain errors. A wrong but listed ZIP gives a confidently wrong estimate.\n"
-            "- **Uncertainty.** The ranges hold on average, not for every home; they are least reliable for very cheap and very "
-            "expensive homes and in limited-coverage cities.\n"
+def render_limitations(art) -> None:
+    stats = evaluation_stats(art.metadata, "no_zip")
+    no_city = sorted(set(art.support.state) - set(art.support[art.support.status != "unsupported"].state))
+    band = (f" In testing, the 80% range contained {stats['band80']['<100k']:.0%} of homes recorded under $100,000 and "
+            f"{stats['band80']['>2M']:.0%} of homes over $2 million.") if stats else ""
+    with st.expander("Model limitations"):
+        st.markdown(md(
+            "- **Historical data.** Prices are recorded prices from about October 2021 to May 2022, not current values; "
+            "the source does not document them as verified completed-sale prices.\n"
+            "- **Very low and high prices.** Ranges are least reliable for homes recorded under $100,000 and for homes over "
+            "$1 million." + band + "\n"
             "- **Missing detail.** The model does not know the exact address, condition, age, view or renovations.\n"
-            "- **Not an appraisal.** Use the result as a rough historical reference, never as a professional valuation.")
-    st.caption(DISCLOSURE)
-    version = (art.metadata or {}).get("version")
-    html_block(f'<div class="hv-footer"><span>{esc(APP_NAME)} · {esc(TAGLINE)}</span>'
-               f'<span>{esc("Model " + version + " · " if version else "")}Historical reference, not an appraisal</span></div>')
+            "- **ZIP codes.** The dataset's ZIP-city pairs are not independently verified. A wrong but listed ZIP gives a "
+            "confidently wrong ZIP-level estimate.\n"
+            "- **Coverage.** Cities absent from training were estimated far less accurately in testing, so they are refused."
+            + (f" No city is available in: {', '.join(no_city)}." if no_city else "")))
 
 
 def main() -> None:
-    st.set_page_config(page_title=f"{APP_NAME} · House Price Estimates", page_icon="🏠", layout="wide")
+    st.set_page_config(page_title=APP_NAME, page_icon="🏠", layout="wide")
     inject_styles()
+    render_header()
     try:
         art = load_artifacts()
         choices = location_choices(art)
     except Exception:
         log.exception("could not load model artifacts")
-        render_header(None)
         st.error("The prediction model could not be loaded, so no estimates can be made right now. "
                  "Please ask the maintainer to check the model files.")
         st.stop()
 
-    render_header(art)
-    render_facts(art)
-    left, right = st.columns([11, 10], gap="large")
+    left, right = st.columns([10, 9], gap="large")
     with left:
         with st.container(key="hv_form"):
             render_inputs(art, choices)
-        render_city_lookup(art)
     with right:
         with st.container(key="hv_result"):
             render_result(art)
-    render_about(art)
+    with st.container(key="hv_more"):
+        render_about_estimate(art)
+        render_location_coverage(art)
+        render_limitations(art)
 
 
 if __name__ == "__main__":

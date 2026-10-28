@@ -1,117 +1,737 @@
-[
-  {
-    "check": "app loads without visible errors",
-    "passed": true,
-    "observed": "title shown"
+{
+  "runs": {
+    "full": {
+      "served_app_sha256": {
+        "app/streamlit_app.py": "d64bedc84fa26ba2bf7a6c56dc57f2c086a22ddbae30fc0a934ae3bab30a1725",
+        "app/styles.css": "6af045fd440f99f92cacc3f74b3f2bd61547f833d6eddc5ad31607422189076b",
+        ".streamlit/config.toml": "d2d0bf762bbe2b61eb7306aefd60a69671729f677528dcc57650e254c3c123f1"
+      },
+      "served_matches_project_app": true,
+      "served_root_is_project": true,
+      "checks": [
+        {
+          "view": "desktop 1366",
+          "check": 1,
+          "name": "loads with HomeValue AI branding",
+          "passed": true,
+          "observed": "title='HomeValue AI', h1='HomeValue AI'"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 1,
+          "name": "loads without visible errors",
+          "passed": true,
+          "observed": "[]"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 16,
+          "name": "first screen is uncluttered: no intro paragraph or facts strip, under 70 words of visible text",
+          "passed": true,
+          "observed": "59 visible words"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 16,
+          "name": "About / Location coverage / Model limitations expanders exist and start collapsed",
+          "passed": true,
+          "observed": "open states=[False, False, False]"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 14,
+          "name": "no horizontal overflow (initial page)",
+          "passed": true,
+          "observed": "scrollWidth=1366 viewport=1366"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 14,
+          "name": "no clipped controls or tiles (initial page)",
+          "passed": true,
+          "observed": "all inside"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 14,
+          "name": "text readable: no text under 11px (initial page)",
+          "passed": true,
+          "observed": "min font 14px, body 16px, intro Nonepx"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 2,
+          "name": "city list disabled until a state is chosen",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 2,
+          "name": "estimate button disabled until state and city are chosen",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 2,
+          "name": "city list enabled after choosing a state",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 4,
+          "name": "supported city shown without a limited label",
+          "passed": true,
+          "observed": "option='Houston'"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 4,
+          "name": "supported city shows no banner or warning (nothing to caution about)",
+          "passed": true,
+          "observed": "[]"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 2,
+          "name": "ZIP list enabled once a city is chosen",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 2,
+          "name": "estimate button enabled",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 9,
+          "name": "no ZIP: estimate equals the recorded v1 value",
+          "passed": true,
+          "observed": "metric=$327,000"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 9,
+          "name": "no ZIP: 80% and 90% ranges equal the recorded v1 values",
+          "passed": true,
+          "observed": "['$215,000 - $497,000', '$185,000 - $579,000']"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 10,
+          "name": "dollar signs present in estimate, ranges and bar ends",
+          "passed": true,
+          "observed": "bar label=Estimate $327,000. 80% prediction range $215,000 - $497,000. 90% prediction range $185,000 - $579,000."
+        },
+        {
+          "view": "desktop 1366",
+          "check": 10,
+          "name": "no LaTeX-rendered text anywhere (earlier $...$ defect)",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 10,
+          "name": "range bar: estimate marker inside the 80% band, inside the 90% track",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 11,
+          "name": "one short historical-data / not-an-appraisal note visible with the estimate",
+          "passed": true,
+          "observed": "'Not an appraisal' x1"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 16,
+          "name": "no status pills or explanatory captions in the result card",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 16,
+          "name": "labels read 'Estimated Home Value', '80% Prediction Range', '90% Prediction Range'",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 11,
+          "name": "About this estimate: full disclosure word for word, once on the page, plus the range caveat",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 9,
+          "name": "no ZIP: About this estimate names the city-level model and the no-ZIP test coverage",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 16,
+          "name": "expander closes again",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 2,
+          "name": "estimate button disabled while the estimate is current (no duplicate request)",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 14,
+          "name": "no horizontal overflow (estimate shown)",
+          "passed": true,
+          "observed": "scrollWidth=1366 viewport=1366"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 14,
+          "name": "no clipped controls or tiles (estimate shown)",
+          "passed": true,
+          "observed": "all inside"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 14,
+          "name": "text readable: no text under 11px (estimate shown)",
+          "passed": true,
+          "observed": "min font 14px, body 16px, intro Nonepx"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 12,
+          "name": "changing an input hides the stale estimate",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 2,
+          "name": "estimate button re-enabled after an input change",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 3,
+          "name": "changing state clears the selected city",
+          "passed": true,
+          "observed": "City  Choose a city"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 4,
+          "name": "limited city labelled in the dropdown",
+          "passed": true,
+          "observed": "option='Alachua (limited)'"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 4,
+          "name": "limited city: no limited-coverage warning before estimating (the dropdown label carries it)",
+          "passed": true,
+          "observed": "['Inputs changed since the last estimate. Press Estimate Home Value to update it.']"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 4,
+          "name": "limited city: estimate shown with exactly one visible limited-coverage warning",
+          "passed": true,
+          "observed": "metric=$395,000, warnings=1"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 11,
+          "name": "limited-city testing evidence lives in the Location coverage expander",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 5,
+          "name": "ZIP option keeps its leading zero",
+          "passed": true,
+          "observed": "['02474']"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 5,
+          "name": "selected ZIP displays with its leading zero",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 5,
+          "name": "valid ZIP: ZIP-level path with leading-zero ZIP in the result",
+          "passed": true,
+          "observed": "metric=$765,000"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 10,
+          "name": "ZIP path shows both ranges with dollar signs",
+          "passed": true,
+          "observed": "['$555,000 - $1,052,000', '$496,000 - $1,177,000']"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 10,
+          "name": "ZIP path: About this estimate says ZIP-level model and 'with a ZIP code' test coverage",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 6,
+          "name": "ZIP '7702x' (malformed (letter)) cannot be selected",
+          "passed": true,
+          "observed": "0 matching options; selection still 02474=True"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 6,
+          "name": "ZIP 'abcde' (not digits) cannot be selected",
+          "passed": true,
+          "observed": "0 matching options; selection still 02474=True"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 6,
+          "name": "ZIP '02474-1234' (ZIP+4 form) cannot be selected",
+          "passed": true,
+          "observed": "0 matching options; selection still 02474=True"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 7,
+          "name": "ZIP '77002' (Houston ZIP, wrong state) cannot be selected",
+          "passed": true,
+          "observed": "0 matching options; selection still 02474=True"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 7,
+          "name": "ZIP '02108' (Boston ZIP, same state, wrong city) cannot be selected",
+          "passed": true,
+          "observed": "0 matching options; selection still 02474=True"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 7,
+          "name": "after the invalid attempts the valid result is unchanged",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 8,
+          "name": "rare ZIP marked in the dropdown",
+          "passed": true,
+          "observed": "option='85619 (few records)'"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 8,
+          "name": "rare ZIP uses the city-level fallback: same estimate as without a ZIP, with explanation",
+          "passed": true,
+          "observed": "without ZIP $328,000, with ZIP 85619 $328,000"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 13,
+          "name": "before reset: inputs changed from defaults",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 13,
+          "name": "reset: selections cleared in the browser",
+          "passed": true,
+          "observed": "{'State': 'State  Choose a state', 'City': 'City  No options to select', 'ZIP code (optional)': 'ZIP code (optional)  No options to select'}"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 13,
+          "name": "reset: numeric inputs back to defaults in the browser",
+          "passed": true,
+          "observed": "bed=3 bath=2.0 size=1800"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 13,
+          "name": "reset: result removed and empty state shown",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 1,
+          "name": "no traceback, path or secret anywhere in the desktop session",
+          "passed": true,
+          "observed": "[]"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 15,
+          "name": "no JavaScript page errors (desktop)",
+          "passed": true,
+          "observed": "[]"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 15,
+          "name": "no requests to external hosts (renders offline)",
+          "passed": true,
+          "observed": "[]"
+        },
+        {
+          "view": "mobile 390",
+          "check": 1,
+          "name": "loads with HomeValue AI branding",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "no horizontal overflow (initial page)",
+          "passed": true,
+          "observed": "scrollWidth=390 viewport=390"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "no clipped controls or tiles (initial page)",
+          "passed": true,
+          "observed": "all inside"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "text readable: no text under 11px (initial page)",
+          "passed": true,
+          "observed": "min font 14px, body 16px, intro Nonepx"
+        },
+        {
+          "view": "mobile 390",
+          "check": 9,
+          "name": "no ZIP: estimate and ranges equal the recorded v1 values",
+          "passed": true,
+          "observed": "$327,000 ['$215,000 - $497,000', '$185,000 - $579,000']"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "single column: result sits below the inputs",
+          "passed": true,
+          "observed": "inputs y=161, result y=799"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "touch targets: Estimate button at least 40px tall and 55% of the viewport wide; Reset on the same row, 40px tall",
+          "passed": true,
+          "observed": "estimate 223x45px, reset 85x45px, same row=True"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "Bedrooms and Bathrooms share one row on mobile (compact form)",
+          "passed": true,
+          "observed": "y=525/525"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "no horizontal overflow (estimate shown)",
+          "passed": true,
+          "observed": "scrollWidth=390 viewport=390"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "no clipped controls or tiles (estimate shown)",
+          "passed": true,
+          "observed": "all inside"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "text readable: no text under 11px (estimate shown)",
+          "passed": true,
+          "observed": "min font 14px, body 16px, intro Nonepx"
+        },
+        {
+          "view": "mobile 390",
+          "check": 10,
+          "name": "no LaTeX-rendered text; dollar signs present",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "mobile 390",
+          "check": 11,
+          "name": "short not-an-appraisal note visible",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "no horizontal overflow (seven-figure ranges (Los Angeles))",
+          "passed": true,
+          "observed": "scrollWidth=390 viewport=390"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "no clipped controls or tiles (seven-figure ranges (Los Angeles))",
+          "passed": true,
+          "observed": "all inside"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "text readable: no text under 11px (seven-figure ranges (Los Angeles))",
+          "passed": true,
+          "observed": "min font 14px, body 16px, intro Nonepx"
+        },
+        {
+          "view": "mobile 390",
+          "check": 10,
+          "name": "seven-figure estimate and ranges shown",
+          "passed": true,
+          "observed": "$1,089,000 ['$632,000 - $1,875,000', '$519,000 - $2,285,000']"
+        },
+        {
+          "view": "mobile 390",
+          "check": 5,
+          "name": "mobile: leading-zero ZIP selectable",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "mobile 390",
+          "check": 5,
+          "name": "mobile: ZIP-level result with both ranges",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "no horizontal overflow (ZIP result)",
+          "passed": true,
+          "observed": "scrollWidth=390 viewport=390"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "no clipped controls or tiles (ZIP result)",
+          "passed": true,
+          "observed": "all inside"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "text readable: no text under 11px (ZIP result)",
+          "passed": true,
+          "observed": "min font 14px, body 16px, intro Nonepx"
+        },
+        {
+          "view": "mobile 390",
+          "check": 4,
+          "name": "mobile: limited-location warning visible with the estimate",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "no horizontal overflow (limited warning)",
+          "passed": true,
+          "observed": "scrollWidth=390 viewport=390"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "no clipped controls or tiles (limited warning)",
+          "passed": true,
+          "observed": "all inside"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "text readable: no text under 11px (limited warning)",
+          "passed": true,
+          "observed": "min font 14px, body 16px, intro Nonepx"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "expanders: all three open to non-empty content on mobile with no horizontal overflow",
+          "passed": true,
+          "observed": "opened=[True, True, True]"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "no horizontal overflow (all expanders open)",
+          "passed": true,
+          "observed": "scrollWidth=390 viewport=390"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "no clipped controls or tiles (all expanders open)",
+          "passed": true,
+          "observed": "all inside"
+        },
+        {
+          "view": "mobile 390",
+          "check": 14,
+          "name": "text readable: no text under 11px (all expanders open)",
+          "passed": true,
+          "observed": "min font 14px, body 16px, intro Nonepx"
+        },
+        {
+          "view": "mobile 390",
+          "check": 13,
+          "name": "mobile: reset clears selections and result in the browser",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "mobile 390",
+          "check": 1,
+          "name": "no traceback, path or secret anywhere in the mobile session",
+          "passed": true,
+          "observed": "[]"
+        },
+        {
+          "view": "mobile 390",
+          "check": 15,
+          "name": "no JavaScript page errors (mobile)",
+          "passed": true,
+          "observed": "[]"
+        }
+      ],
+      "passed": 89,
+      "total": 89
+    },
+    "failure": {
+      "served_app_sha256": {
+        "app/streamlit_app.py": "d64bedc84fa26ba2bf7a6c56dc57f2c086a22ddbae30fc0a934ae3bab30a1725",
+        "app/styles.css": "6af045fd440f99f92cacc3f74b3f2bd61547f833d6eddc5ad31607422189076b",
+        ".streamlit/config.toml": "d2d0bf762bbe2b61eb7306aefd60a69671729f677528dcc57650e254c3c123f1"
+      },
+      "served_matches_project_app": true,
+      "served_root_is_project": false,
+      "checks": [
+        {
+          "view": "desktop 1366",
+          "check": 15,
+          "name": "friendly model-load error shown",
+          "passed": true,
+          "observed": "The prediction model could not be loaded, so no estimates can be made right now. Please ask the maintainer to check the model files."
+        },
+        {
+          "view": "desktop 1366",
+          "check": 15,
+          "name": "no traceback, file path, secret or internal name on the page",
+          "passed": true,
+          "observed": "[]"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 15,
+          "name": "no estimate and no input form shown",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "desktop 1366",
+          "check": 15,
+          "name": "no JavaScript page errors",
+          "passed": true,
+          "observed": "[]"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 15,
+          "name": "no horizontal overflow (error page)",
+          "passed": true,
+          "observed": "scrollWidth=1366 viewport=1366"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 15,
+          "name": "no clipped controls or tiles (error page)",
+          "passed": true,
+          "observed": "all inside"
+        },
+        {
+          "view": "desktop 1366",
+          "check": 15,
+          "name": "text readable: no text under 11px (error page)",
+          "passed": true,
+          "observed": "min font 14.72px, body 16px, intro Nonepx"
+        },
+        {
+          "view": "mobile 390",
+          "check": 15,
+          "name": "friendly model-load error shown",
+          "passed": true,
+          "observed": "The prediction model could not be loaded, so no estimates can be made right now. Please ask the maintainer to check the model files."
+        },
+        {
+          "view": "mobile 390",
+          "check": 15,
+          "name": "no traceback, file path, secret or internal name on the page",
+          "passed": true,
+          "observed": "[]"
+        },
+        {
+          "view": "mobile 390",
+          "check": 15,
+          "name": "no estimate and no input form shown",
+          "passed": true,
+          "observed": ""
+        },
+        {
+          "view": "mobile 390",
+          "check": 15,
+          "name": "no JavaScript page errors",
+          "passed": true,
+          "observed": "[]"
+        }
+      ],
+      "passed": 11,
+      "total": 11
+    }
   },
-  {
-    "check": "supported location labelled",
-    "passed": true,
-    "observed": "Supported location: Houston, Texas.; Choose a location, enter the property details and press Estimate House Price."
-  },
-  {
-    "check": "optional ZIP field enabled after choosing a city",
-    "passed": true,
-    "observed": ""
-  },
-  {
-    "check": "no-ZIP estimate equals recorded v1 value",
-    "passed": true,
-    "observed": "metric=$327,000"
-  },
-  {
-    "check": "80% and 90% ranges display (v1 values)",
-    "passed": true,
-    "observed": "80%: $215,000 - $497,000; 90%: $185,000 - $579,000"
-  },
-  {
-    "check": "route shown: city-level (no ZIP)",
-    "passed": true,
-    "observed": ""
-  },
-  {
-    "check": "historical-price disclaimer visible",
-    "passed": true,
-    "observed": ""
-  },
-  {
-    "check": "changing an input hides the stale estimate",
-    "passed": true,
-    "observed": ""
-  },
-  {
-    "check": "changing state clears the selected city",
-    "passed": true,
-    "observed": "City  Choose a city"
-  },
-  {
-    "check": "limited city labelled in dropdown",
-    "passed": true,
-    "observed": "Alachua (limited coverage)"
-  },
-  {
-    "check": "limited city warning shown",
-    "passed": true,
-    "observed": "Limited coverage for Alachua, Florida: only 52 training rows; too few validation rows to verify accuracy. An estimate is shown, but treat it"
-  },
-  {
-    "check": "ZIP option keeps its leading zero",
-    "passed": true,
-    "observed": "['02474']"
-  },
-  {
-    "check": "selected ZIP displays with leading zero",
-    "passed": true,
-    "observed": ""
-  },
-  {
-    "check": "valid ZIP uses the ZIP-level path",
-    "passed": true,
-    "observed": "metric=$765,000"
-  },
-  {
-    "check": "80% and 90% ranges shown on ZIP path",
-    "passed": true,
-    "observed": ""
-  },
-  {
-    "check": "ZIP not associated with the city cannot be selected",
-    "passed": true,
-    "observed": "0 matching options for 77002 in Arlington, MA"
-  },
-  {
-    "check": "rare ZIP marked in dropdown",
-    "passed": true,
-    "observed": "85619 (few records: city-level estimate)"
-  },
-  {
-    "check": "rare ZIP uses city-level fallback (same estimate as no ZIP)",
-    "passed": true,
-    "observed": "no ZIP $328,000, ZIP 85619 $328,000"
-  },
-  {
-    "check": "reset clears inputs and result",
-    "passed": true,
-    "observed": ""
-  },
-  {
-    "check": "no traceback, path or secret anywhere in the session",
-    "passed": true,
-    "observed": "none found"
-  },
-  {
-    "check": "mobile 390px: estimate shown",
-    "passed": true,
-    "observed": "metric=$327,000"
-  },
-  {
-    "check": "mobile 390px: no horizontal page scroll",
-    "passed": true,
-    "observed": "scrollWidth=390, innerWidth=390"
-  },
-  {
-    "check": "mobile 390px: columns stack (result below inputs)",
-    "passed": true,
-    "observed": "inputs y=-359, result y=728"
+  "generated_utc": "2026-10-28T09:55:38+00:00",
+  "browser": "Chromium 151.0.7922.34 (Playwright)",
+  "project_app_sha256": {
+    "app/streamlit_app.py": "d64bedc84fa26ba2bf7a6c56dc57f2c086a22ddbae30fc0a934ae3bab30a1725",
+    "app/styles.css": "6af045fd440f99f92cacc3f74b3f2bd61547f833d6eddc5ad31607422189076b",
+    ".streamlit/config.toml": "d2d0bf762bbe2b61eb7306aefd60a69671729f677528dcc57650e254c3c123f1"
   }
-]
+}
